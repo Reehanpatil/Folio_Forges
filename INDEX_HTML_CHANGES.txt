@@ -1,0 +1,20 @@
+index.html mein sirf ye 4 changes karo:
+
+1) <head> ke andar, <meta name="viewport" ...> wali line ko REPLACE karo is se:
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+2) <head> ke andar (kahin bhi, <title> ke baad) ye paste karo:
+   <link rel="manifest" href="/manifest.json" />
+   <meta name="theme-color" content="#121316" />
+   <meta name="mobile-web-app-capable" content="yes" />
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="apple-mobile-web-app-title" content="Folio Forge" />
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+   <link rel="stylesheet" href="/pwa.css" />
+
+3) </body> se theek pehle (aakhri </script> ke baad) ye paste karo:
+   <script src="/pwa.js"></script>
+
+4) Files ko index.html ke SAATH same folder (root) mein rakho:
+   manifest.json, sw.js, pwa.css, pwa.js, icons/ folder
