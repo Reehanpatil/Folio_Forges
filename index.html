@@ -1,0 +1,4221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" ...> wali line ko REPLACE karo is se:
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("folioforge-theme");
+          if (saved === "light")
+            document.documentElement.classList.add("light");
+        } catch (e) {}
+      })();
+    </script>
+    <title>Folio Forge — Build a portfolio in 3 minutes, no signup</title>
+   
+    <link rel="manifest" href="/manifest.json" />
+     <meta name="theme-color" content="#121316" />
+     <meta name="mobile-web-app-capable" content="yes" />
+     <meta name="apple-mobile-web-app-capable" content="yes" />
+     <meta name="apple-mobile-web-app-title" content="Folio Forge" />
+     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+     <link rel="stylesheet" href="/pwa.css" />
+    
+    <meta
+      name="description"
+      content="Fill your details, pick a template, download a ready portfolio website. Free, no signup, no lock-in."
+    />
+    <meta
+      name="keywords"
+      content="portfolio builder, free portfolio website, no signup portfolio, developer portfolio generator, resume website builder, download html portfolio, personal website maker"
+    />
+    <meta name="author" content="Reehan MP" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://folioforg.netlify.app/" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dayqtr9f9/image/upload/v1785993979/Screenshot_2026-08-06_105555_si0fra.png"
+    />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Folio Forge — Build a portfolio in 3 minutes, no signup"
+    />
+    <meta
+      property="og:description"
+      content="Fill your details, pick a template, download a ready portfolio website. Free, no signup, no lock-in."
+    />
+    <meta property="og:site_name" content="Folio Forge" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Folio Forge — Build a portfolio in 3 minutes, no signup"
+    />
+    <meta
+      name="twitter:description"
+      content="Fill your details, pick a template, download a ready portfolio website. Free, no signup, no lock-in."
+    />
+    <meta name="creator" content="Reehan MP" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+              mono: ["IBM Plex Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #121316;
+        --panel: #1b1d22;
+        --panel2: #22252b;
+        --line: #2e3138;
+        --text: #edeef0;
+        --dim: #9aa0ac;
+        --accent: #d6ff3e;
+        --accent-text: #d6ff3e;
+        --accent-ink: #121316;
+        --preview-wrap: #0b0c0e;
+        --preview-frame-bg: #ffffff;
+      }
+      html.light {
+        --bg: #fafaf8;
+        --panel: #ffffff;
+        --panel2: #f3f3ef;
+        --line: #e4e4dd;
+        --text: #141414;
+        --dim: #6b6b63;
+        --accent: #d6ff3e;
+        --accent-text: #6b7a00;
+        --accent-ink: #121316;
+        --preview-wrap: #eeeee9;
+        --preview-frame-bg: #ffffff;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--line);
+        border-radius: 4px;
+      }
+      .hidden-view {
+        display: none !important;
+      }
+
+      .bg-app {
+        background: var(--bg);
+      }
+      .bg-panel {
+        background: var(--panel);
+      }
+      .bg-panel2 {
+        background: var(--panel2);
+      }
+      .bg-preview-wrap {
+        background: var(--preview-wrap);
+      }
+      .text-app {
+        color: var(--text);
+      }
+      .text-dim {
+        color: var(--dim);
+      }
+      .text-accent {
+        color: var(--accent-text);
+      }
+      .bg-accent {
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+      .bg-accent:hover {
+        filter: brightness(1.08);
+      }
+      .border-app {
+        border-color: var(--line);
+      }
+
+      .tab-btn.active {
+        color: var(--accent-text);
+        border-color: var(--accent);
+      }
+      /* ---- Template picker page (advanced cards) ---- */
+      .tpl-pick-card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        padding: 14px;
+        cursor: pointer;
+        text-align: left;
+        transition:
+          transform 0.18s ease,
+          border-color 0.18s ease,
+          box-shadow 0.18s ease;
+        position: relative;
+      }
+      .tpl-pick-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.35);
+      }
+      .tpl-pick-thumb {
+        height: 148px;
+        border-radius: 10px;
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 10px;
+      }
+      .tpl-pick-thumb .tpl-pick-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.55);
+        margin-bottom: 6px;
+        width: 55%;
+      }
+      .tpl-pick-thumb .tpl-pick-bar.short {
+        width: 32%;
+        opacity: 0.7;
+      }
+      .tpl-pick-name {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 3px;
+      }
+      .tpl-pick-desc {
+        font-size: 12px;
+        color: var(--dim);
+        line-height: 1.5;
+      }
+      .tpl-pick-cta {
+        margin-top: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-family: "IBM Plex Mono", monospace;
+        color: var(--accent-text);
+        opacity: 0;
+        transform: translateX(-4px);
+        transition:
+          opacity 0.18s,
+          transform 0.18s;
+      }
+      .tpl-pick-card:hover .tpl-pick-cta {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* ---- Mobile Edit / Preview segmented switch ---- */
+      .mobile-switch {
+        display: flex;
+        gap: 3px;
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 3px;
+      }
+      .mobile-switch-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: var(--dim);
+        font-size: 12.5px;
+        font-weight: 600;
+        font-family: "IBM Plex Mono", monospace;
+        padding: 8px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .mobile-switch-btn.active {
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+
+      /* Panels stack + toggle on mobile; both always visible on md+ */
+      @media (max-width: 767px) {
+        .builder-panel {
+          display: none !important;
+        }
+        .builder-panel.mobile-active {
+          display: flex !important;
+        }
+      }
+
+      /* ---- Boot-up loading screen ---- */
+      .site-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity 0.55s ease,
+          visibility 0.55s ease;
+      }
+      .site-loader.hide {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .site-loader-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .site-loader-logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 800;
+        font-size: 21px;
+        animation: loaderPulse 1.3s ease-in-out infinite;
+      }
+      @keyframes loaderPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.85;
+        }
+      }
+      .site-loader-bar {
+        width: 130px;
+        height: 3px;
+        background: var(--line);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .site-loader-bar-fill {
+        height: 100%;
+        width: 35%;
+        background: var(--accent);
+        border-radius: 3px;
+        animation: loaderSlide 1.05s ease-in-out infinite;
+      }
+      @keyframes loaderSlide {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(380%);
+        }
+      }
+      .site-loader-text {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px;
+        color: var(--dim);
+        letter-spacing: 0.05em;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .site-loader-logo,
+        .site-loader-bar-fill {
+          animation: none;
+        }
+      }
+
+      .current-tpl-swatch {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+      .home-visitor-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 32px;
+      }
+      .eye-icon {
+        color: var(--accent-text);
+        flex-shrink: 0;
+      }
+      .visitor-count-pill {
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        color: var(--text);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      /* ---- Shared responsive header (mounted on all 3 pages) ---- */
+      .site-shared-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 14px 16px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--line);
+      }
+      @media (min-width: 768px) {
+        .site-shared-header {
+          padding: 18px 40px;
+          border-bottom: none;
+        }
+      }
+      .site-header-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        flex-shrink: 0;
+      }
+      .site-header-logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 13px;
+        font-family: "Space Grotesk", sans-serif;
+        flex-shrink: 0;
+      }
+      .site-header-word {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--text);
+        display: none;
+        white-space: nowrap;
+      }
+      @media (min-width: 480px) {
+        .site-header-word {
+          display: inline;
+        }
+      }
+      .site-header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      @media (min-width: 480px) {
+        .site-header-right {
+          gap: 12px;
+        }
+      }
+
+      /* ---- Collapsible customization groups ---- */
+      .cz-group {
+        margin-top: 12px;
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
+      }
+      .cz-summary {
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "IBM Plex Mono", monospace;
+        color: var(--text);
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2px 0;
+        user-select: none;
+      }
+      .cz-summary::-webkit-details-marker {
+        display: none;
+      }
+      .cz-summary::after {
+        content: "▾";
+        color: var(--dim);
+        font-size: 11px;
+        transition: transform 0.15s;
+      }
+      .cz-group[open] > .cz-summary::after {
+        transform: rotate(180deg);
+      }
+      .cz-summary:hover {
+        color: var(--accent-text);
+      }
+      .cz-body {
+        padding-top: 12px;
+      }
+      .dl-btn {
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 12.5px;
+        padding: 9px 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: filter 0.15s;
+      }
+      .dl-btn:hover {
+        filter: brightness(1.08);
+      }
+
+      /* ---- AI bio button ---- */
+      .ai-bio-btn {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--accent-text);
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          opacity 0.15s;
+      }
+      .ai-bio-btn:hover {
+        border-color: var(--accent);
+      }
+      .ai-bio-btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      /* ---- Character counter ---- */
+      .char-counter {
+        font-size: 10.5px;
+        font-family: "IBM Plex Mono", monospace;
+        color: var(--dim);
+        text-align: right;
+        margin-top: 3px;
+      }
+      .char-counter.warn {
+        color: #d99a2b;
+      }
+      .char-counter.over {
+        color: #e5484d;
+      }
+
+      /* ---- Field validation ---- */
+      .field-warning {
+        font-size: 10.5px;
+        color: #e5484d;
+        margin-top: 3px;
+        display: none;
+      }
+      .field-warning.show {
+        display: block;
+      }
+      .inp.field-invalid {
+        border-color: #e5484d !important;
+      }
+
+      /* ---- GitHub import box ---- */
+      .gh-import-box {
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 18px;
+      }
+      .gh-import-btn {
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 12.5px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .gh-import-btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      /* ---- Project image upload ---- */
+      .proj-img-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .proj-img-thumb {
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        flex-shrink: 0;
+      }
+      .proj-img-placeholder {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        border: 1px dashed var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--dim);
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .proj-img-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+      }
+      .proj-img-upload-btn {
+        margin-top: 0 !important;
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+      }
+
+      /* ---- Section visibility toggles ---- */
+      .sec-toggle {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--dim);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s,
+          opacity 0.15s;
+      }
+      .sec-toggle.active {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-color: var(--accent);
+      }
+      .sec-toggle:not(.active) {
+        opacity: 0.6;
+        text-decoration: line-through;
+      }
+
+      /* ---- Section order & visibility list ---- */
+      .section-order-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 7px 10px;
+      }
+      .section-order-name {
+        font-size: 12.5px;
+        font-weight: 600;
+        font-family: "IBM Plex Mono", monospace;
+      }
+      .section-order-name.off {
+        opacity: 0.45;
+        text-decoration: line-through;
+      }
+      .section-order-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .order-btn,
+      .sec-toggle-mini {
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--dim);
+        font-size: 11px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+      .order-btn:hover:not(:disabled) {
+        border-color: var(--accent);
+        color: var(--accent-text);
+      }
+      .order-btn:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      .sec-toggle-mini.active {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-color: var(--accent);
+      }
+
+      /* ---- Accent color picker ---- */
+      .accent-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid var(--line);
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.15s;
+        position: relative;
+        overflow: hidden;
+      }
+      .accent-dot:hover {
+        transform: scale(1.15);
+      }
+      .accent-dot.active {
+        border-color: var(--ink);
+        box-shadow: 0 0 0 2px var(--bg);
+      }
+      .accent-custom {
+        background: conic-gradient(
+          from 0deg,
+          red,
+          yellow,
+          lime,
+          cyan,
+          blue,
+          magenta,
+          red
+        );
+        display: inline-block;
+      }
+
+      /* ---- Hero background picker ---- */
+      .hero-bg-dot {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        border: 2px solid var(--line);
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.15s;
+      }
+      .hero-bg-dot:hover {
+        transform: scale(1.1);
+      }
+      .hero-bg-dot.active {
+        border-color: var(--ink);
+        box-shadow: 0 0 0 2px var(--bg);
+      }
+      .hero-bg-photo {
+        background: var(--panel2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      /* ---- Toast notifications ---- */
+      #toast-stack {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        pointer-events: none;
+      }
+      .toast {
+        background: var(--ink);
+        color: var(--bg);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        white-space: nowrap;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ---- Deploy modal ---- */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 150;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        max-width: 440px;
+        width: 100%;
+        padding: 24px;
+      }
+      .deploy-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: border-color 0.15s;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .deploy-option:hover {
+        border-color: var(--accent);
+      }
+      .deploy-option .emoji {
+        font-size: 22px;
+      }
+      .deploy-option .title {
+        font-weight: 700;
+        font-size: 13.5px;
+      }
+      .deploy-option .desc {
+        font-size: 11.5px;
+        color: var(--dim);
+      }
+
+      /* ---- Resume-progress banner (landing page) ---- */
+      .resume-banner-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .resume-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 4px;
+        animation: fadeIn 0.4s ease;
+      }
+      .resume-banner-text {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--dim);
+        text-align: left;
+      }
+      .resume-banner-text strong {
+        color: var(--ink);
+      }
+      .resume-banner-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+      }
+      .resume-banner-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .resume-btn-primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 700;
+        font-size: 12.5px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .resume-btn-ghost {
+        background: transparent;
+        color: var(--dim);
+        font-size: 12.5px;
+        padding: 8px 10px;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .resume-btn-ghost:hover {
+        color: var(--ink);
+      }
+
+      .fade-in {
+        animation: fadeIn 0.25s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .lbl {
+        display: block;
+        font-size: 11px;
+        color: var(--dim);
+        margin: 14px 0 6px;
+        font-family: "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .lbl:first-child {
+        margin-top: 0;
+      }
+      .inp {
+        width: 100%;
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--text);
+        padding: 10px 12px;
+        font-size: 14px;
+        font-family: "Inter", sans-serif;
+        transition: border-color 0.15s;
+      }
+      .inp:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .add-btn {
+        margin-top: 10px;
+        width: 100%;
+        background: transparent;
+        border: 1px dashed var(--line);
+        color: var(--accent-text);
+        border-radius: 8px;
+        padding: 10px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        cursor: pointer;
+        text-align: center;
+        display: block;
+      }
+      .add-btn:hover {
+        border-color: var(--accent);
+      }
+      .entry-card {
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        position: relative;
+      }
+      .entry-card .remove {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: var(--dim);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .entry-card .remove:hover {
+        color: #ff6b6b;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .theme-toggle {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        border-radius: 13px;
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .theme-toggle .knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        transition: left 0.2s;
+      }
+      html.light .theme-toggle .knob {
+        left: 24px;
+      }
+
+      .device-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 13px;
+        padding: 5px 9px;
+        border-radius: 6px;
+        line-height: 1;
+        opacity: 0.55;
+        transition:
+          opacity 0.15s,
+          background 0.15s;
+      }
+      .device-btn:hover {
+        opacity: 0.85;
+      }
+      .device-btn.active {
+        opacity: 1;
+        background: var(--panel2);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+
+      .photo-circle {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--line);
+      }
+      .photo-placeholder {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--panel2);
+        border: 1px dashed var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--dim);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="font-body antialiased bg-app text-app">
+    <div id="site-loader" class="site-loader">
+      <div class="site-loader-inner">
+        <div class="site-loader-logo">F</div>
+        <div class="site-loader-bar">
+          <div class="site-loader-bar-fill"></div>
+        </div>
+        <div class="site-loader-text">Loading Folio Forge…</div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var minTime = 600;
+        var start = Date.now();
+        var hidden = false;
+        function hideLoader() {
+          if (hidden) return;
+          hidden = true;
+          var wait = Math.max(0, minTime - (Date.now() - start));
+          setTimeout(function () {
+            var loader = document.getElementById("site-loader");
+            if (loader) {
+              loader.classList.add("hide");
+              setTimeout(function () {
+                if (loader.parentNode) loader.parentNode.removeChild(loader);
+              }, 550);
+            }
+          }, wait);
+        }
+        if (document.readyState === "complete") {
+          hideLoader();
+        } else {
+          window.addEventListener("load", hideLoader);
+        }
+        setTimeout(hideLoader, 3000); // safety net — never gets stuck
+      })();
+    </script>
+    <!-- ============ VIEW 1: LANDING ============ -->
+    <div id="view-landing">
+      <section class="min-h-screen flex flex-col">
+        <div class="site-header-mount"></div>
+
+        <div id="resume-banner" class="hidden-view resume-banner-wrap">
+          <div class="resume-banner">
+            <div class="resume-banner-text">
+              <span class="resume-banner-dot"></span>
+              <span
+                >You have a portfolio in progress
+                <strong id="resume-banner-name"></strong> — pick up where you
+                left off?</span
+              >
+            </div>
+            <div class="resume-banner-actions">
+              <button onclick="resumeSession()" class="resume-btn-primary">
+                Continue →
+              </button>
+              <button onclick="dismissResumeBanner()" class="resume-btn-ghost">
+                Start fresh
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex-1 flex flex-col items-center justify-center text-center px-6 py-16 max-w-3xl mx-auto"
+        >
+          <span
+            class="font-mono text-xs uppercase tracking-widest text-accent border rounded-full px-3 py-1 mb-6"
+            style="border-color: var(--accent); opacity: 0.9"
+            >Free · No signup · No lock-in</span
+          >
+          <h1
+            class="font-display text-4xl md:text-6xl font-bold leading-tight mb-5"
+          >
+            Build a portfolio <span class="text-accent">in 3 minutes.</span
+            ><br />Download it. Done.
+          </h1>
+          <p class="text-dim text-base md:text-lg max-w-xl mb-9">
+            Fill your details, pick a design, get a working
+            <span class="font-mono text-app">index.html</span> file. No account,
+            no subscription, no watermark hunting — just a portfolio you can
+            host anywhere.
+          </p>
+          <button
+            onclick="showTemplates()"
+            class="bg-accent font-display font-bold px-8 py-4 rounded-lg text-base transition"
+          >
+            Start building — it's free
+          </button>
+          <div
+            class="flex items-center gap-6 mt-10 text-xs text-dim font-mono flex-wrap justify-center"
+          >
+            <span>✓ 12 templates</span>
+            <span>✓ Live preview</span>
+            <span>✓ Add your photo</span>
+            <span>✓ Dark / light mode</span>
+          </div>
+        </div>
+        <footer
+          class="text-center py-6 text-dim text-xs font-mono border-t border-app"
+        >
+          Built by
+          <span class="text-app font-semibold">Reehan MP</span>
+          · Folio Forge © <span id="landing-footer-year"></span>
+        </footer>
+      </section>
+    </div>
+
+    <!-- ============ VIEW 2: TEMPLATE PICKER ============ -->
+    <div id="view-templates" class="hidden-view">
+      <section class="min-h-screen flex flex-col">
+        <div class="site-header-mount"></div>
+
+        <div class="max-w-6xl mx-auto w-full px-6 py-8 md:py-12 flex-1">
+          <button
+            onclick="showLanding()"
+            class="text-xs text-dim hover:text-app font-mono mb-4 inline-block"
+          >
+            ← Back
+          </button>
+          <div
+            class="font-mono text-[11px] uppercase tracking-widest text-accent mb-2"
+          >
+            Step 1 of 2
+          </div>
+          <h1 class="font-display text-2xl md:text-4xl font-bold mb-2">
+            Pick a design to start with
+          </h1>
+          <p class="text-dim text-sm md:text-base mb-8 max-w-lg">
+            Every template is fully responsive and swappable later. Click one to
+            jump into the editor with live preview.
+          </p>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="tpl-pick-card" onclick="chooseTemplate('minimal')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #f4f1ea, #ded6c4)"
+              >
+                <div class="tpl-pick-bar" style="background: #b8532e"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #22201c"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Minimal</div>
+              <div class="tpl-pick-desc">
+                Warm, editorial, distraction-free — lets your work speak for
+                itself.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('dark')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #0d0f11, #1c2027)"
+              >
+                <div class="tpl-pick-bar" style="background: #7cff6b"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #8a919c"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Dark Dev</div>
+              <div class="tpl-pick-desc">
+                Terminal-inspired dark theme with monospace accents, built for
+                developers.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('bold')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #ff5c39, #6e8eff)"
+              >
+                <div class="tpl-pick-bar" style="background: #fff"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: rgba(255, 255, 255, 0.7)"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Bold</div>
+              <div class="tpl-pick-desc">
+                Vibrant gradient hero with punchy type — energetic and
+                confident.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('neubrutal')">
+              <div
+                class="tpl-pick-thumb"
+                style="
+                  background: linear-gradient(135deg, #ffe347, #ff3ea5);
+                  border: 2px solid #0b0b0b;
+                "
+              >
+                <div class="tpl-pick-bar" style="background: #0b0b0b"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #0b0b0b"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Neubrutal</div>
+              <div class="tpl-pick-desc">
+                Thick borders, hard shadows, loud colors — maximum personality.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('editorial')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #fbf9f4, #d9cfc1)"
+              >
+                <div class="tpl-pick-bar" style="background: #8a5a2f"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #22201c"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Editorial</div>
+              <div class="tpl-pick-desc">
+                Sidebar layout with a literary, magazine-style feel for writers
+                and designers.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('glass')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #2b1055, #7597de)"
+              >
+                <div class="tpl-pick-bar" style="background: #fff"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: rgba(255, 255, 255, 0.6)"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Glass</div>
+              <div class="tpl-pick-desc">
+                Frosted glass cards floating on a dreamy gradient backdrop.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('mono')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #fbfbf9, #d8ded9)"
+              >
+                <div class="tpl-pick-bar" style="background: #0a6b41"></div>
+                <div class="tpl-pick-bar short" style="background: #111"></div>
+              </div>
+              <div class="tpl-pick-name">Mono</div>
+              <div class="tpl-pick-desc">
+                Clean light monospace grid — a calm, code-editor aesthetic.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('aurora')">
+              <div
+                class="tpl-pick-thumb"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    #7c5cff,
+                    #ff7ce5,
+                    #34e0c4
+                  );
+                "
+              >
+                <div class="tpl-pick-bar" style="background: #fff"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: rgba(255, 255, 255, 0.7)"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Aurora</div>
+              <div class="tpl-pick-desc">
+                Colorful mesh-gradient backdrop with frosted glass cards.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('luxury')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #0c0c0c, #c9a24b)"
+              >
+                <div class="tpl-pick-bar" style="background: #c9a24b"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #f2ede1"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Luxury</div>
+              <div class="tpl-pick-desc">
+                Elegant black-and-gold serif design, high-end agency feel.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('retro')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(180deg, #2d1155, #ff3ea5)"
+              >
+                <div class="tpl-pick-bar" style="background: #00e5ff"></div>
+                <div class="tpl-pick-bar short" style="background: #fff"></div>
+              </div>
+              <div class="tpl-pick-name">Retro Wave</div>
+              <div class="tpl-pick-desc">
+                Y2K synthwave neon on a dark horizon-glow backdrop.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('corporate')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #101828, #2563eb)"
+              >
+                <div class="tpl-pick-bar" style="background: #fff"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: rgba(255, 255, 255, 0.6)"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Corporate</div>
+              <div class="tpl-pick-desc">
+                Clean blue-and-white professional layout, crisp and
+                ATS-friendly.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+
+            <div class="tpl-pick-card" onclick="chooseTemplate('pastel')">
+              <div
+                class="tpl-pick-thumb"
+                style="background: linear-gradient(135deg, #ffe1ec, #e3e0ff)"
+              >
+                <div class="tpl-pick-bar" style="background: #e5688f"></div>
+                <div
+                  class="tpl-pick-bar short"
+                  style="background: #3b2f3a"
+                ></div>
+              </div>
+              <div class="tpl-pick-name">Pastel Soft</div>
+              <div class="tpl-pick-desc">
+                Soft rounded pastel palette — warm and approachable.
+              </div>
+              <div class="tpl-pick-cta">Use this template →</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ VIEW 3: BUILDER ============ -->
+    <div id="view-builder" class="hidden-view">
+      <section>
+        <div class="site-header-mount"></div>
+        <div
+          class="md:hidden sticky top-0 z-30 bg-app px-4 py-2.5 border-b border-app"
+        >
+          <div class="mobile-switch">
+            <button
+              class="mobile-switch-btn active"
+              data-panel="form"
+              onclick="setMobilePanel('form')"
+            >
+              ✏️ Edit details
+            </button>
+            <button
+              class="mobile-switch-btn"
+              data-panel="preview"
+              onclick="setMobilePanel('preview')"
+            >
+              👁 Live preview
+            </button>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-[440px_1fr] min-h-screen">
+          <!-- LEFT: FORM -->
+          <div
+            id="panel-form"
+            class="builder-panel mobile-active bg-panel border-r border-app flex flex-col"
+          >
+            <div
+              class="px-6 py-5 border-b border-app flex items-start justify-between"
+            >
+              <div>
+                <button
+                  onclick="showTemplates()"
+                  class="text-xs text-dim hover:text-app font-mono mb-2 inline-block"
+                >
+                  ← Change template
+                </button>
+                <div
+                  class="font-mono text-[11px] uppercase tracking-widest text-accent"
+                >
+                  Step 2 of 2
+                </div>
+                <h2 class="font-display text-xl font-bold mt-1">
+                  Tell us about you
+                </h2>
+                <p class="text-dim text-xs mt-1">
+                  Everything updates live on the right →
+                </p>
+              </div>
+            </div>
+
+            <div class="flex border-b border-app overflow-x-auto no-scrollbar">
+              <button
+                class="tab-btn active flex-1 py-3 text-xs font-mono border-b-2 border-transparent text-dim whitespace-nowrap px-3"
+                data-tab="basics"
+              >
+                Basics
+              </button>
+              <button
+                class="tab-btn flex-1 py-3 text-xs font-mono border-b-2 border-transparent text-dim whitespace-nowrap px-3"
+                data-tab="skills"
+              >
+                Skills
+              </button>
+              <button
+                class="tab-btn flex-1 py-3 text-xs font-mono border-b-2 border-transparent text-dim whitespace-nowrap px-3"
+                data-tab="projects"
+              >
+                Projects
+              </button>
+              <button
+                class="tab-btn flex-1 py-3 text-xs font-mono border-b-2 border-transparent text-dim whitespace-nowrap px-3"
+                data-tab="experience"
+              >
+                Work
+              </button>
+              <button
+                class="tab-btn flex-1 py-3 text-xs font-mono border-b-2 border-transparent text-dim whitespace-nowrap px-3"
+                data-tab="more"
+              >
+                More
+              </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-6 py-5">
+              <div class="tab-content fade-in" data-tab="basics">
+                <div class="gh-import-box">
+                  <label class="lbl !mt-0"
+                    >⚡ Fill from GitHub (optional)</label
+                  >
+                  <div class="flex gap-2">
+                    <input
+                      id="f-gh-username"
+                      class="inp !mt-0"
+                      placeholder="your-github-username"
+                    />
+                    <button
+                      id="gh-import-btn"
+                      onclick="importFromGithub()"
+                      class="gh-import-btn"
+                    >
+                      Import
+                    </button>
+                  </div>
+                  <p class="text-[11px] text-dim mt-1.5">
+                    Pulls your name, bio, location, photo and top repos as
+                    projects. You can edit everything after.
+                  </p>
+                </div>
+
+                <label class="lbl">Profile photo (optional)</label>
+                <div class="flex items-center gap-3">
+                  <img
+                    id="photo-preview-img"
+                    class="photo-circle hidden-view"
+                    src=""
+                  />
+                  <div id="photo-placeholder" class="photo-placeholder">
+                    No photo
+                  </div>
+                  <div class="flex-1">
+                    <label class="add-btn cursor-pointer" style="margin-top: 0">
+                      Upload photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        class="hidden"
+                        id="f-photo"
+                        onchange="handlePhoto(event)"
+                      />
+                    </label>
+                    <button
+                      id="remove-photo-btn"
+                      onclick="removePhoto()"
+                      class="text-[11px] text-dim hover:text-app mt-1 hidden-view w-full text-center font-mono"
+                    >
+                      Remove photo
+                    </button>
+                  </div>
+                </div>
+
+                <label class="lbl">Full name</label>
+                <input
+                  id="f-name"
+                  class="inp"
+                  value="Aditi Sharma"
+                  oninput="render()"
+                />
+                <label class="lbl">Role / title</label>
+                <input
+                  id="f-role"
+                  class="inp"
+                  value="Full Stack Developer"
+                  oninput="render()"
+                />
+                <div class="flex items-center justify-between mt-3">
+                  <label class="lbl !mt-0">Short bio</label>
+                  <button
+                    id="ai-bio-btn"
+                    type="button"
+                    onclick="generateBioAI()"
+                    class="ai-bio-btn"
+                    title="Write my bio with AI"
+                  >
+                    ✨ Write with AI
+                  </button>
+                </div>
+                <textarea
+                  id="f-bio"
+                  class="inp min-h-[80px]"
+                  oninput="
+                    render();
+                    syncCharCounter(this, 260, 400);
+                  "
+                >
+I build fast, reliable web apps end-to-end — from database schema to pixel-perfect UI. Currently exploring distributed systems and AI tooling.</textarea
+                >
+                <div class="char-counter" id="bio-char-counter"></div>
+                <label class="lbl">Location</label>
+                <input
+                  id="f-location"
+                  class="inp"
+                  value="Bengaluru, India"
+                  oninput="render()"
+                />
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="lbl">Email</label
+                    ><input
+                      id="f-email"
+                      class="inp"
+                      value="[email protected]"
+                      oninput="
+                        render();
+                        validateField(this, isLikelyEmail);
+                      "
+                      onblur="validateField(this, isLikelyEmail)"
+                    />
+                    <div class="field-warning" id="warn-email"></div>
+                  </div>
+                  <div>
+                    <label class="lbl">Phone (optional)</label
+                    ><input
+                      id="f-phone"
+                      class="inp"
+                      value=""
+                      oninput="render()"
+                    />
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="lbl">GitHub URL</label
+                    ><input
+                      id="f-github"
+                      class="inp"
+                      value="https://github.com/aditi"
+                      oninput="
+                        render();
+                        validateField(this, isLikelyUrl);
+                      "
+                      onblur="validateField(this, isLikelyUrl)"
+                    />
+                    <div class="field-warning" id="warn-github"></div>
+                  </div>
+                  <div>
+                    <label class="lbl">LinkedIn URL</label
+                    ><input
+                      id="f-linkedin"
+                      class="inp"
+                      value="https://linkedin.com/in/aditi"
+                      oninput="
+                        render();
+                        validateField(this, isLikelyUrl);
+                      "
+                      onblur="validateField(this, isLikelyUrl)"
+                    />
+                    <div class="field-warning" id="warn-linkedin"></div>
+                  </div>
+                </div>
+                <label class="lbl">Twitter / X URL (optional)</label>
+                <input
+                  id="f-twitter"
+                  class="inp"
+                  value=""
+                  oninput="
+                    render();
+                    validateField(this, isLikelyUrl);
+                  "
+                  onblur="validateField(this, isLikelyUrl)"
+                />
+                <div class="field-warning" id="warn-twitter"></div>
+              </div>
+
+              <div class="tab-content hidden" data-tab="skills">
+                <label class="lbl">Skills (comma separated)</label>
+                <textarea
+                  id="f-skills"
+                  class="inp min-h-[80px]"
+                  oninput="render()"
+                >
+JavaScript, React, Node.js, Express, MongoDB, TypeScript, Tailwind CSS, Docker, AWS, Git</textarea
+                >
+                <label class="lbl mt-6">Education</label>
+                <div id="edu-list" class="space-y-3"></div>
+                <button class="add-btn" onclick="addEducation()">
+                  + Add education
+                </button>
+              </div>
+
+              <div class="tab-content hidden" data-tab="projects">
+                <div id="project-list" class="space-y-3"></div>
+                <button class="add-btn" onclick="addProject()">
+                  + Add project
+                </button>
+              </div>
+
+              <div class="tab-content hidden" data-tab="experience">
+                <div id="exp-list" class="space-y-3"></div>
+                <button class="add-btn" onclick="addExperience()">
+                  + Add experience
+                </button>
+              </div>
+
+              <div class="tab-content hidden" data-tab="more">
+                <label class="lbl !mt-0">Resume (PDF, optional)</label>
+                <div class="flex items-center gap-3">
+                  <div class="flex-1">
+                    <label class="add-btn cursor-pointer" style="margin-top: 0">
+                      Upload resume PDF
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        class="hidden"
+                        id="f-resume"
+                        onchange="handleResume(event)"
+                      />
+                    </label>
+                    <div
+                      id="resume-filename"
+                      class="text-[11px] text-dim mt-1.5 font-mono hidden-view"
+                    ></div>
+                    <button
+                      id="remove-resume-btn"
+                      onclick="removeResume()"
+                      class="text-[11px] text-dim hover:text-app mt-1 hidden-view w-full text-center font-mono"
+                    >
+                      Remove resume
+                    </button>
+                  </div>
+                </div>
+                <p class="text-[11px] text-dim mt-2">
+                  Adds a "Resume" link to your portfolio that opens the PDF
+                  full-screen in a new tab — no cramped preview box.
+                </p>
+
+                <label class="lbl mt-6">Extra sections</label>
+                <p class="text-[11px] text-dim mb-2">
+                  Not enough with Skills / Projects / Work? Add your own —
+                  Certifications, Testimonials, Publications, Awards, anything.
+                </p>
+                <div id="custom-section-list" class="space-y-3"></div>
+                <button class="add-btn" onclick="addCustomSection()">
+                  + Add section
+                </button>
+              </div>
+            </div>
+
+            <div class="border-t border-app px-6 py-4 bg-panel">
+              <div class="flex items-center gap-3">
+                <div
+                  id="current-tpl-swatch"
+                  class="current-tpl-swatch"
+                  style="background: linear-gradient(135deg, #f4f1ea, #ded6c4)"
+                ></div>
+                <div class="flex-1 min-w-0">
+                  <div
+                    class="text-[10px] text-dim font-mono uppercase tracking-wide"
+                  >
+                    Current design
+                  </div>
+                  <div
+                    id="current-tpl-name"
+                    class="font-display font-semibold text-sm"
+                  >
+                    Minimal
+                  </div>
+                </div>
+                <button
+                  onclick="showTemplates()"
+                  class="text-xs text-accent-text hover:underline font-mono whitespace-nowrap"
+                >
+                  Change →
+                </button>
+              </div>
+
+              <details class="cz-group" open>
+                <summary class="cz-summary">
+                  📑 Sections &amp; visibility
+                </summary>
+                <div class="cz-body">
+                  <div id="section-order-list" class="space-y-1.5"></div>
+                  <div class="flex flex-wrap gap-1.5 mt-2">
+                    <button
+                      class="sec-toggle active"
+                      data-sec="contact"
+                      onclick="toggleSection('contact')"
+                    >
+                      Contact
+                    </button>
+                    <button
+                      class="sec-toggle"
+                      data-sec="visitorCounter"
+                      onclick="toggleSection('visitorCounter')"
+                    >
+                      👀 Visitor counter
+                    </button>
+                  </div>
+                </div>
+              </details>
+
+              <details class="cz-group">
+                <summary class="cz-summary">🎨 Colors &amp; fonts</summary>
+                <div class="cz-body">
+                  <div
+                    class="text-[10px] text-dim font-mono uppercase tracking-wide mb-2"
+                  >
+                    Accent color
+                  </div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <button
+                      class="accent-dot"
+                      data-color="#ff5c39"
+                      style="background: #ff5c39"
+                      onclick="setAccent('#ff5c39')"
+                      title="Orange"
+                    ></button>
+                    <button
+                      class="accent-dot"
+                      data-color="#6e8eff"
+                      style="background: #6e8eff"
+                      onclick="setAccent('#6e8eff')"
+                      title="Blue"
+                    ></button>
+                    <button
+                      class="accent-dot"
+                      data-color="#34e0c4"
+                      style="background: #34e0c4"
+                      onclick="setAccent('#34e0c4')"
+                      title="Teal"
+                    ></button>
+                    <button
+                      class="accent-dot"
+                      data-color="#ff7ce5"
+                      style="background: #ff7ce5"
+                      onclick="setAccent('#ff7ce5')"
+                      title="Pink"
+                    ></button>
+                    <button
+                      class="accent-dot"
+                      data-color="#c9a24b"
+                      style="background: #c9a24b"
+                      onclick="setAccent('#c9a24b')"
+                      title="Gold"
+                    ></button>
+                    <button
+                      class="accent-dot"
+                      data-color="#d6ff3e"
+                      style="background: #d6ff3e"
+                      onclick="setAccent('#d6ff3e')"
+                      title="Lime"
+                    ></button>
+                    <label
+                      class="accent-dot accent-custom"
+                      title="Pick a custom color"
+                    >
+                      <input
+                        type="color"
+                        oninput="setAccent(this.value)"
+                        style="
+                          opacity: 0;
+                          width: 100%;
+                          height: 100%;
+                          cursor: pointer;
+                        "
+                      />
+                    </label>
+                    <button
+                      onclick="resetAccent()"
+                      class="text-[10px] text-dim hover:text-app font-mono ml-1"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
+                  <div
+                    class="text-[10px] text-dim font-mono uppercase tracking-wide mt-4 mb-2"
+                  >
+                    Font pairing
+                  </div>
+                  <div class="flex flex-wrap gap-1.5" id="font-picker">
+                    <button
+                      class="sec-toggle"
+                      data-font="classic"
+                      onclick="setFontPair('classic')"
+                      style="font-family: &quot;Fraunces&quot;, serif"
+                    >
+                      Classic
+                    </button>
+                    <button
+                      class="sec-toggle"
+                      data-font="modern"
+                      onclick="setFontPair('modern')"
+                      style="font-family: &quot;Space Grotesk&quot;, sans-serif"
+                    >
+                      Modern
+                    </button>
+                    <button
+                      class="sec-toggle"
+                      data-font="mono"
+                      onclick="setFontPair('mono')"
+                      style="font-family: &quot;IBM Plex Mono&quot;, monospace"
+                    >
+                      Mono
+                    </button>
+                    <button
+                      class="sec-toggle"
+                      data-font="elegant"
+                      onclick="setFontPair('elegant')"
+                      style="font-family: &quot;Playfair Display&quot;, serif"
+                    >
+                      Elegant
+                    </button>
+                    <button
+                      onclick="resetFontPair()"
+                      class="text-[10px] text-dim hover:text-app font-mono ml-1"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
+                  <div
+                    class="text-[10px] text-dim font-mono uppercase tracking-wide mt-4 mb-2"
+                  >
+                    Hero background
+                  </div>
+                  <div
+                    class="flex items-center gap-2 flex-wrap"
+                    id="hero-bg-picker"
+                  >
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="warm"
+                      style="
+                        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+                      "
+                      onclick="setHeroBg('warm')"
+                      title="Warm"
+                    ></button>
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="ocean"
+                      style="
+                        background: linear-gradient(135deg, #2193b0, #6dd5ed);
+                      "
+                      onclick="setHeroBg('ocean')"
+                      title="Ocean"
+                    ></button>
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="purple"
+                      style="
+                        background: linear-gradient(135deg, #7c5cff, #ff7ce5);
+                      "
+                      onclick="setHeroBg('purple')"
+                      title="Purple dream"
+                    ></button>
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="midnight"
+                      style="
+                        background: linear-gradient(135deg, #0f2027, #2c5364);
+                      "
+                      onclick="setHeroBg('midnight')"
+                      title="Midnight"
+                    ></button>
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="dark"
+                      style="background: #111111"
+                      onclick="setHeroBg('dark')"
+                      title="Solid dark"
+                    ></button>
+                    <button
+                      class="hero-bg-dot"
+                      data-hero="cream"
+                      style="
+                        background: #f4f1ea;
+                        box-shadow: inset 0 0 0 1px var(--line);
+                      "
+                      onclick="setHeroBg('cream')"
+                      title="Solid cream"
+                    ></button>
+                    <button
+                      class="hero-bg-dot hero-bg-photo"
+                      data-hero="photo"
+                      onclick="setHeroBg('photo')"
+                      title="Use my photo"
+                    >
+                      📷
+                    </button>
+                    <button
+                      onclick="resetHeroBg()"
+                      class="text-[10px] text-dim hover:text-app font-mono ml-1"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </details>
+
+              <p class="text-center text-[11px] text-dim mt-4">
+                Ready? Use Download or Deploy in the preview panel →
+              </p>
+            </div>
+          </div>
+
+          <!-- RIGHT: PREVIEW -->
+          <div
+            id="panel-preview"
+            class="builder-panel bg-preview-wrap flex flex-col min-h-[560px] md:min-h-0"
+          >
+            <div
+              class="flex items-center gap-2 px-4 md:px-5 py-3.5 border-b border-app flex-wrap"
+            >
+              <div
+                class="w-2.5 h-2.5 rounded-full hidden sm:block"
+                style="background: var(--line)"
+              ></div>
+              <div
+                class="w-2.5 h-2.5 rounded-full hidden sm:block"
+                style="background: var(--line)"
+              ></div>
+              <div
+                class="w-2.5 h-2.5 rounded-full hidden sm:block"
+                style="background: var(--line)"
+              ></div>
+              <div
+                class="flex-1 bg-panel rounded-md px-4 py-1.5 font-mono text-xs text-dim min-w-[90px] truncate"
+                id="preview-url"
+              >
+                yourname.folio
+              </div>
+              <div
+                class="flex items-center gap-1 bg-panel rounded-md p-1"
+                id="device-switch"
+              >
+                <button
+                  class="device-btn active"
+                  data-device="desktop"
+                  onclick="setPreviewDevice('desktop')"
+                  title="Desktop preview"
+                  aria-label="Desktop preview"
+                >
+                  🖥
+                </button>
+                <button
+                  class="device-btn"
+                  data-device="tablet"
+                  onclick="setPreviewDevice('tablet')"
+                  title="Tablet preview"
+                  aria-label="Tablet preview"
+                >
+                  📋
+                </button>
+                <button
+                  class="device-btn"
+                  data-device="mobile"
+                  onclick="setPreviewDevice('mobile')"
+                  title="Mobile preview"
+                  aria-label="Mobile preview"
+                >
+                  📱
+                </button>
+              </div>
+              <button
+                class="theme-toggle"
+                onclick="toggleTheme()"
+                aria-label="Toggle dark/light mode"
+                title="Toggle theme"
+              >
+                <span class="knob theme-knob">🌙</span>
+              </button>
+              <button
+                onclick="downloadSite()"
+                class="dl-btn"
+                title="Download index.html"
+              >
+                ⬇ Download
+              </button>
+              <button
+                onclick="openDeployModal()"
+                class="dl-btn"
+                style="
+                  background: var(--panel2);
+                  color: var(--ink);
+                  box-shadow: inset 0 0 0 1px var(--line);
+                "
+                title="Deploy online"
+              >
+                🚀 Deploy
+              </button>
+            </div>
+            <div
+              class="flex-1 p-3 md:p-5 flex justify-center overflow-auto"
+              id="preview-viewport"
+            >
+              <iframe
+                id="preview-frame"
+                class="w-full max-w-4xl rounded-lg border border-app transition-all duration-300"
+                style="background: var(--preview-frame-bg); min-height: 480px"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer
+        class="text-center py-6 text-dim text-xs font-mono border-t border-app"
+      >
+        Built by
+        <span class="text-app font-semibold">Reehan MP</span>
+        · Folio Forge © <span id="landing-footer-year"></span>
+      </footer>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-stack"></div>
+
+    <!-- Deploy modal (populated by JS) -->
+    <div id="deploy-modal-root"></div>
+
+    <script>
+      let projects = [
+        {
+          title: "Realtime Chat App",
+          description:
+            "WebSocket-based chat with rooms, typing indicators and message history, built on the MERN stack.",
+          link: "https://github.com/aditi/chat-app",
+          tags: "React, Node.js, Socket.io",
+        },
+        {
+          title: "Expense Tracker API",
+          description:
+            "REST API with JWT auth, MongoDB aggregation pipelines for monthly analytics.",
+          link: "https://github.com/aditi/expense-api",
+          tags: "Express, MongoDB, JWT",
+        },
+      ];
+      let experience = [
+        {
+          role: "Frontend Developer",
+          company: "Nimbus Labs",
+          duration: "2024 — Present",
+          description:
+            "Building the core dashboard used by 10k+ businesses; migrated legacy jQuery views to React.",
+        },
+        {
+          role: "Intern, Software Engineering",
+          company: "Craft & Co.",
+          duration: "2023",
+          description:
+            "Shipped a component library adopted across 4 internal products.",
+        },
+      ];
+      let education = [
+        {
+          degree: "B.Tech, Computer Science",
+          institution: "NIT Trichy",
+          year: "2020 — 2024",
+        },
+      ];
+      let currentTemplate = "minimal";
+      let customSections = [];
+      let resumeData = null;
+      let resumeFileName = "";
+      let sectionToggles = {
+        skills: true,
+        projects: true,
+        experience: true,
+        education: true,
+        contact: true,
+        visitorCounter: false,
+      };
+      let sectionOrder = ["skills", "projects", "experience", "education"];
+      let customAccent = null; // null = use each template's own accent color
+      let customFontPair = null; // null = use each template's own font pairing
+      let heroBackground = null; // null = use each template's own hero background
+      const TEMPLATE_META = {
+        minimal: {
+          label: "Minimal",
+          gradient: "linear-gradient(135deg, #f4f1ea, #ded6c4)",
+        },
+        dark: {
+          label: "Dark Dev",
+          gradient: "linear-gradient(135deg, #0d0f11, #1c2027)",
+        },
+        bold: {
+          label: "Bold",
+          gradient: "linear-gradient(135deg, #ff5c39, #6e8eff)",
+        },
+        neubrutal: {
+          label: "Neubrutal",
+          gradient: "linear-gradient(135deg, #ffe347, #ff3ea5)",
+        },
+        editorial: {
+          label: "Editorial",
+          gradient: "linear-gradient(135deg, #fbf9f4, #d9cfc1)",
+        },
+        glass: {
+          label: "Glass",
+          gradient: "linear-gradient(135deg, #2b1055, #7597de)",
+        },
+        mono: {
+          label: "Mono",
+          gradient: "linear-gradient(135deg, #fbfbf9, #d8ded9)",
+        },
+        aurora: {
+          label: "Aurora",
+          gradient: "linear-gradient(135deg, #7c5cff, #ff7ce5, #34e0c4)",
+        },
+        luxury: {
+          label: "Luxury",
+          gradient: "linear-gradient(135deg, #0c0c0c, #c9a24b)",
+        },
+        retro: {
+          label: "Retro Wave",
+          gradient: "linear-gradient(180deg, #2d1155, #ff3ea5)",
+        },
+        corporate: {
+          label: "Corporate",
+          gradient: "linear-gradient(135deg, #101828, #2563eb)",
+        },
+        pastel: {
+          label: "Pastel Soft",
+          gradient: "linear-gradient(135deg, #ffe1ec, #e3e0ff)",
+        },
+      };
+      function syncCurrentTplBar() {
+        const meta = TEMPLATE_META[currentTemplate] || TEMPLATE_META.minimal;
+        const swatch = el("current-tpl-swatch");
+        const name = el("current-tpl-name");
+        if (swatch) swatch.style.background = meta.gradient;
+        if (name) name.textContent = meta.label;
+      }
+      let photoData = null;
+
+      // Device preview switcher (desktop / tablet / mobile)
+      let previewDevice = "desktop";
+      function setPreviewDevice(mode) {
+        previewDevice = mode;
+        const frame = el("preview-frame");
+        document.querySelectorAll(".device-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.device === mode);
+        });
+        if (mode === "mobile") {
+          frame.style.maxWidth = "390px";
+          frame.style.width = "390px";
+        } else if (mode === "tablet") {
+          frame.style.maxWidth = "700px";
+          frame.style.width = "100%";
+        } else {
+          frame.style.maxWidth = "";
+          frame.style.width = "100%";
+        }
+      }
+
+      // ---------- Autosave / restore builder state (survives refresh) ----------
+      // Some browsers restrict localStorage on local file:// pages. Detect that
+      // up front, fall back to sessionStorage, and tell the user honestly
+      // instead of silently losing their work.
+      function pickStorage() {
+        const probe = "__ff_probe__";
+        try {
+          localStorage.setItem(probe, "1");
+          localStorage.removeItem(probe);
+          return { kind: "local", api: localStorage };
+        } catch (e) {}
+        try {
+          sessionStorage.setItem(probe, "1");
+          sessionStorage.removeItem(probe);
+          return { kind: "session", api: sessionStorage };
+        } catch (e) {}
+        return { kind: "none", api: null };
+      }
+      const ffStorage = pickStorage();
+      let suppressSave = false;
+      function currentViewName() {
+        if (!el("view-templates").classList.contains("hidden-view"))
+          return "templates";
+        if (!el("view-builder").classList.contains("hidden-view"))
+          return "builder";
+        return "landing";
+      }
+      function saveState() {
+        if (suppressSave) return;
+        if (!ffStorage.api) return;
+        try {
+          const state = {
+            view: currentViewName(),
+            template: currentTemplate,
+            photo: photoData,
+            sectionToggles,
+            sectionOrder,
+            customAccent,
+            customFontPair,
+            heroBackground,
+            fields: {
+              name: el("f-name").value,
+              role: el("f-role").value,
+              bio: el("f-bio").value,
+              location: el("f-location").value,
+              email: el("f-email").value,
+              phone: el("f-phone").value,
+              github: el("f-github").value,
+              linkedin: el("f-linkedin").value,
+              twitter: el("f-twitter").value,
+              skills: el("f-skills").value,
+            },
+            projects,
+            experience,
+            education,
+            customSections,
+            resume: resumeData,
+            resumeFileName,
+          };
+          ffStorage.api.setItem("folioforge-state", JSON.stringify(state));
+        } catch (e) {
+          /* storage full/blocked — fail silently, editing still works */
+        }
+      }
+      function loadState() {
+        if (!ffStorage.api) return false;
+        try {
+          const raw = ffStorage.api.getItem("folioforge-state");
+          if (!raw) return false;
+          const state = JSON.parse(raw);
+          if (state.fields) {
+            const f = state.fields;
+            if (f.name != null) el("f-name").value = f.name;
+            if (f.role != null) el("f-role").value = f.role;
+            if (f.bio != null) el("f-bio").value = f.bio;
+            if (f.location != null) el("f-location").value = f.location;
+            if (f.email != null) el("f-email").value = f.email;
+            if (f.phone != null) el("f-phone").value = f.phone;
+            if (f.github != null) el("f-github").value = f.github;
+            if (f.linkedin != null) el("f-linkedin").value = f.linkedin;
+            if (f.twitter != null) el("f-twitter").value = f.twitter;
+            if (f.skills != null) el("f-skills").value = f.skills;
+          }
+          if (Array.isArray(state.projects)) projects = state.projects;
+          if (Array.isArray(state.experience)) experience = state.experience;
+          if (Array.isArray(state.education)) education = state.education;
+          if (Array.isArray(state.customSections))
+            customSections = state.customSections;
+          if (state.template) currentTemplate = state.template;
+          if (state.sectionToggles)
+            Object.assign(sectionToggles, state.sectionToggles);
+          if (Array.isArray(state.sectionOrder)) {
+            const valid = state.sectionOrder.filter((k) =>
+              ["skills", "projects", "experience", "education"].includes(k),
+            );
+            if (valid.length === 4) sectionOrder = valid;
+          }
+          if (state.customAccent !== undefined)
+            customAccent = state.customAccent;
+          if (state.customFontPair !== undefined)
+            customFontPair = state.customFontPair;
+          if (state.heroBackground !== undefined)
+            heroBackground = state.heroBackground;
+          if (state.resume) {
+            resumeData = state.resume;
+            resumeFileName = state.resumeFileName || "resume.pdf";
+            const fn = el("resume-filename");
+            fn.textContent = "✓ " + resumeFileName;
+            fn.classList.remove("hidden-view");
+            el("remove-resume-btn").classList.remove("hidden-view");
+          }
+          if (state.photo) {
+            photoData = state.photo;
+            el("photo-preview-img").src = photoData;
+            el("photo-preview-img").classList.remove("hidden-view");
+            el("photo-placeholder").classList.add("hidden-view");
+            el("remove-photo-btn").classList.remove("hidden-view");
+          }
+          renderProjectForm();
+          renderExpForm();
+          renderEduForm();
+          renderCustomSectionForm();
+          syncCurrentTplBar();
+          syncSectionToggles();
+          syncAccentPicker();
+          syncFontPicker();
+          syncHeroBgPicker();
+          suppressSave = true;
+          render();
+          suppressSave = false;
+          return state;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function el(id) {
+        return document.getElementById(id);
+      }
+      function escapeAttr(s) {
+        return (s || "").replace(/"/g, "&quot;");
+      }
+      function escapeHtml(s) {
+        return (s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      // Page navigation
+      function playFadeIn(id) {
+        const node = el(id);
+        node.classList.remove("fade-in");
+        void node.offsetWidth;
+        node.classList.add("fade-in");
+      }
+      function showTemplates() {
+        el("view-landing").classList.add("hidden-view");
+        el("view-builder").classList.add("hidden-view");
+        el("view-templates").classList.remove("hidden-view");
+        playFadeIn("view-templates");
+        window.scrollTo(0, 0);
+        saveState();
+      }
+      function showBuilder() {
+        el("view-landing").classList.add("hidden-view");
+        el("view-templates").classList.add("hidden-view");
+        el("view-builder").classList.remove("hidden-view");
+        playFadeIn("view-builder");
+        window.scrollTo(0, 0);
+        saveState();
+      }
+      function showLanding() {
+        el("view-builder").classList.add("hidden-view");
+        el("view-templates").classList.add("hidden-view");
+        el("view-landing").classList.remove("hidden-view");
+        playFadeIn("view-landing");
+        window.scrollTo(0, 0);
+        saveState();
+      }
+      // ---------- Resume-progress banner (shown on landing when there's a saved draft) ----------
+      let pendingResumeView = null;
+      function showResumeBanner(state) {
+        pendingResumeView = state.view;
+        const nameEl = el("resume-banner-name");
+        if (nameEl) {
+          const name = state.fields && state.fields.name;
+          nameEl.textContent = name ? `(${name})` : "";
+        }
+        el("resume-banner").classList.remove("hidden-view");
+      }
+      function resumeSession() {
+        if (pendingResumeView === "builder") showBuilder();
+        else if (pendingResumeView === "templates") showTemplates();
+        el("resume-banner").classList.add("hidden-view");
+      }
+      function dismissResumeBanner() {
+        if (
+          !confirm(
+            "This will permanently delete your saved progress — name, projects, everything. This can't be undone. Continue?",
+          )
+        )
+          return;
+        el("resume-banner").classList.add("hidden-view");
+        try {
+          if (ffStorage.api) ffStorage.api.removeItem("folioforge-state");
+        } catch (e) {}
+        location.reload();
+      }
+
+      function chooseTemplate(name) {
+        currentTemplate = name;
+        syncCurrentTplBar();
+        showBuilder();
+        render();
+      }
+      function setMobilePanel(which) {
+        const formPanel = el("panel-form");
+        const previewPanel = el("panel-preview");
+        formPanel.classList.toggle("mobile-active", which === "form");
+        previewPanel.classList.toggle("mobile-active", which === "preview");
+        document
+          .querySelectorAll(".mobile-switch-btn")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.panel === which),
+          );
+      }
+
+      // ---------- Toast notifications ----------
+      function showToast(msg, ms) {
+        const stack = el("toast-stack");
+        if (!stack) return;
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        stack.appendChild(t);
+        requestAnimationFrame(() => t.classList.add("show"));
+        setTimeout(() => {
+          t.classList.remove("show");
+          setTimeout(() => t.remove(), 250);
+        }, ms || 2600);
+      }
+
+      // ---------- Section visibility toggles ----------
+      function toggleSection(key) {
+        sectionToggles[key] = !sectionToggles[key];
+        document.querySelectorAll(".sec-toggle").forEach((b) => {
+          if (b.dataset.sec === key)
+            b.classList.toggle("active", sectionToggles[key]);
+        });
+        renderSectionOrderList();
+        render();
+      }
+      function syncSectionToggles() {
+        document.querySelectorAll(".sec-toggle").forEach((b) => {
+          b.classList.toggle("active", !!sectionToggles[b.dataset.sec]);
+        });
+        renderSectionOrderList();
+      }
+
+      // ---------- Section order (reorder Skills/Projects/Experience/Education) ----------
+      const SECTION_LABELS = {
+        skills: "Skills",
+        projects: "Projects",
+        experience: "Experience",
+        education: "Education",
+      };
+      function renderSectionOrderList() {
+        const list = el("section-order-list");
+        if (!list) return;
+        list.innerHTML = sectionOrder
+          .map((key, i) => {
+            const on = !!sectionToggles[key];
+            return `
+    <div class="section-order-row">
+      <span class="section-order-name${on ? "" : " off"}">${SECTION_LABELS[key] || key}</span>
+      <div class="section-order-actions">
+        <button class="sec-toggle-mini${on ? " active" : ""}" onclick="toggleSection('${key}')" title="Show/hide">${on ? "👁" : "🚫"}</button>
+        <button class="order-btn" onclick="moveSection('${key}',-1)" ${i === 0 ? "disabled" : ""} title="Move up">↑</button>
+        <button class="order-btn" onclick="moveSection('${key}',1)" ${i === sectionOrder.length - 1 ? "disabled" : ""} title="Move down">↓</button>
+      </div>
+    </div>`;
+          })
+          .join("");
+      }
+      function moveSection(key, dir) {
+        const i = sectionOrder.indexOf(key);
+        const j = i + dir;
+        if (i === -1 || j < 0 || j >= sectionOrder.length) return;
+        [sectionOrder[i], sectionOrder[j]] = [sectionOrder[j], sectionOrder[i]];
+        renderSectionOrderList();
+        render();
+      }
+
+      // ---------- Accent color picker ----------
+      function setAccent(hex) {
+        customAccent = hex;
+        document
+          .querySelectorAll(".accent-dot[data-color]")
+          .forEach((d) =>
+            d.classList.toggle("active", d.dataset.color === hex),
+          );
+        render();
+      }
+      function resetAccent() {
+        customAccent = null;
+        document
+          .querySelectorAll(".accent-dot[data-color]")
+          .forEach((d) => d.classList.remove("active"));
+        render();
+      }
+      function syncAccentPicker() {
+        document
+          .querySelectorAll(".accent-dot[data-color]")
+          .forEach((d) =>
+            d.classList.toggle("active", d.dataset.color === customAccent),
+          );
+      }
+
+      // ---------- Font pairing picker ----------
+      function setFontPair(key) {
+        customFontPair = key;
+        document
+          .querySelectorAll("#font-picker [data-font]")
+          .forEach((b) => b.classList.toggle("active", b.dataset.font === key));
+        render();
+      }
+      function resetFontPair() {
+        customFontPair = null;
+        document
+          .querySelectorAll("#font-picker [data-font]")
+          .forEach((b) => b.classList.remove("active"));
+        render();
+      }
+      function syncFontPicker() {
+        document
+          .querySelectorAll("#font-picker [data-font]")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.font === customFontPair),
+          );
+      }
+
+      // ---------- Hero background picker ----------
+      function setHeroBg(key) {
+        if (key === "photo" && !photoData) {
+          showToast("Upload a profile photo first (Basics tab)");
+          return;
+        }
+        heroBackground = key;
+        document
+          .querySelectorAll("#hero-bg-picker [data-hero]")
+          .forEach((b) => b.classList.toggle("active", b.dataset.hero === key));
+        render();
+      }
+      function resetHeroBg() {
+        heroBackground = null;
+        document
+          .querySelectorAll("#hero-bg-picker [data-hero]")
+          .forEach((b) => b.classList.remove("active"));
+        render();
+      }
+      function syncHeroBgPicker() {
+        document
+          .querySelectorAll("#hero-bg-picker [data-hero]")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.hero === heroBackground),
+          );
+      }
+
+      // ---------- AI bio generator (calls Claude directly, no key needed here) ----------
+      async function generateBioAI() {
+        const btn = el("ai-bio-btn");
+        const original = btn.textContent;
+        const name = el("f-name").value.trim() || "the candidate";
+        const role = el("f-role").value.trim() || "a professional";
+        const skills = el("f-skills").value.trim();
+        const existing = el("f-bio").value.trim();
+        btn.textContent = "✨ Writing…";
+        btn.disabled = true;
+        try {
+          const prompt =
+            `Write a short, confident portfolio bio in first person (2-3 sentences, no hashtags, no emojis, no quotation marks around it) for ${name}, working as ${role}.` +
+            (skills ? ` Relevant skills: ${skills}.` : "") +
+            (existing ? ` Rough notes to incorporate: "${existing}".` : "") +
+            ` Return ONLY the bio text, nothing else — no preamble, no labels.`;
+          const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-6",
+              max_tokens: 300,
+              messages: [{ role: "user", content: prompt }],
+            }),
+          });
+          if (!res.ok) throw new Error("Request failed");
+          const data = await res.json();
+          const text = (data.content || [])
+            .filter((b) => b.type === "text")
+            .map((b) => b.text)
+            .join("\n")
+            .trim()
+            .replace(/^"|"$/g, "");
+          if (text) {
+            el("f-bio").value = text;
+            render();
+            showToast("✨ Bio written — tweak it if you like");
+          } else {
+            showToast("Couldn't generate a bio, try again");
+          }
+        } catch (e) {
+          showToast("AI is unavailable right now — try again shortly");
+        } finally {
+          btn.textContent = original;
+          btn.disabled = false;
+        }
+      }
+
+      // ---------- Deploy (Netlify Drop / Vercel / GitHub Pages) ----------
+      function openDeployModal() {
+        const root = el("deploy-modal-root");
+        root.innerHTML = `
+          <div class="modal-backdrop" onclick="if(event.target===this) closeDeployModal()">
+            <div class="modal-card">
+              <h3 class="font-display font-bold text-lg mb-1">Put it online</h3>
+              <p class="text-dim text-xs mb-1">No server needed — download once, then drop the file on any of these. All free, no signup required for the first two.</p>
+              <a class="deploy-option" href="#" onclick="deployVia('netlify');return false;">
+                <span class="emoji">🟢</span>
+                <div><div class="title">Netlify Drop</div><div class="desc">Downloads your file, then opens Netlify Drop — drag it in, live in seconds.</div></div>
+              </a>
+              <a class="deploy-option" href="#" onclick="deployVia('vercel');return false;">
+                <span class="emoji">▲</span>
+                <div><div class="title">Vercel</div><div class="desc">Downloads your file, then opens Vercel's drop-to-deploy page.</div></div>
+              </a>
+              <a class="deploy-option" href="#" onclick="deployVia('github');return false;">
+                <span class="emoji">🐙</span>
+                <div><div class="title">GitHub Pages</div><div class="desc">Downloads your file — create a repo, upload it as index.html, enable Pages.</div></div>
+              </a>
+              <button onclick="closeDeployModal()" class="w-full text-center text-xs text-dim hover:text-app mt-4 font-mono">Close</button>
+            </div>
+          </div>`;
+      }
+      function closeDeployModal() {
+        el("deploy-modal-root").innerHTML = "";
+      }
+      function deployVia(target) {
+        downloadSite();
+        const urls = {
+          netlify: "https://app.netlify.com/drop",
+          vercel: "https://vercel.com/new",
+          github: "https://github.com/new",
+        };
+        const msgs = {
+          netlify: "Downloaded! Drag index.html onto the Netlify Drop page →",
+          vercel: "Downloaded! Drag index.html onto the Vercel page →",
+          github: "Downloaded! Create the repo, then upload index.html →",
+        };
+        setTimeout(() => window.open(urls[target], "_blank"), 300);
+        showToast(msgs[target], 4200);
+        closeDeployModal();
+      }
+
+      // Theme toggle (syncs all toggle knobs)
+      function toggleTheme() {
+        const isLight = document.documentElement.classList.toggle("light");
+        document
+          .querySelectorAll(".theme-knob")
+          .forEach((k) => (k.textContent = isLight ? "☀️" : "🌙"));
+        try {
+          localStorage.setItem("folioforge-theme", isLight ? "light" : "dark");
+        } catch (e) {}
+      }
+
+      // ---------- Shared responsive header, mounted on all 3 pages ----------
+      const SITE_HEADER_HTML = `
+<header class="site-shared-header">
+  <button class="site-header-brand" onclick="showLanding()" aria-label="Folio Forge home">
+    <span class="site-header-logo">F</span>
+    <span class="site-header-word">Folio Forge</span>
+  </button>
+  <div class="site-header-right">
+    <div class="home-visitor-badge">
+      <svg class="eye-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      <span class="visitor-count-pill site-visitor-count">···</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode" title="Toggle theme">
+      <span class="knob theme-knob">🌙</span>
+    </button>
+  </div>
+</header>`;
+      function mountSharedHeader() {
+        document.querySelectorAll(".site-header-mount").forEach((m) => {
+          m.innerHTML = SITE_HEADER_HTML;
+        });
+        // Sync knob icons + theme immediately for the freshly-mounted headers
+        const isLight = document.documentElement.classList.contains("light");
+        document
+          .querySelectorAll(".theme-knob")
+          .forEach((k) => (k.textContent = isLight ? "☀️" : "🌙"));
+      }
+      mountSharedHeader();
+      (function () {
+        const y = el("landing-footer-year");
+        if (y) y.textContent = new Date().getFullYear();
+      })();
+
+      // Photo upload
+      function handlePhoto(evt) {
+        const file = evt.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          photoData = e.target.result;
+          el("photo-preview-img").src = photoData;
+          el("photo-preview-img").classList.remove("hidden-view");
+          el("photo-placeholder").classList.add("hidden-view");
+          el("remove-photo-btn").classList.remove("hidden-view");
+          render();
+        };
+        reader.readAsDataURL(file);
+      }
+      function removePhoto() {
+        photoData = null;
+        el("f-photo").value = "";
+        el("photo-preview-img").classList.add("hidden-view");
+        el("photo-placeholder").classList.remove("hidden-view");
+        el("remove-photo-btn").classList.add("hidden-view");
+        render();
+      }
+
+      // ---------- Character counters (soft, non-blocking) ----------
+      function charCounterHtml(text, soft, hard) {
+        soft = soft || 160;
+        hard = hard || 240;
+        const len = (text || "").length;
+        const cls =
+          len > hard ? "char-counter over"
+          : len > soft ? "char-counter warn"
+          : "char-counter";
+        return `<div class="${cls}">${len} characters</div>`;
+      }
+      function syncCharCounter(inputEl, soft, hard) {
+        soft = soft || 160;
+        hard = hard || 240;
+        const counter = inputEl.nextElementSibling;
+        if (!counter || !counter.classList.contains("char-counter")) return;
+        const len = inputEl.value.length;
+        counter.textContent = len + " characters";
+        counter.classList.remove("warn", "over");
+        if (len > hard) counter.classList.add("over");
+        else if (len > soft) counter.classList.add("warn");
+      }
+
+      // ---------- Lightweight field validation (soft warnings, never blocks) ----------
+      function isLikelyEmail(v) {
+        if (!v || !v.trim()) return true;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+      }
+      function isLikelyUrl(v) {
+        if (!v || !v.trim()) return true;
+        const s = v.trim();
+        return (
+          /^https?:\/\/.+\..+/i.test(s) || /^[\w-]+\.[a-z]{2,}(\/.*)?$/i.test(s)
+        );
+      }
+      function validateField(inputEl, checkFn) {
+        const ok = checkFn(inputEl.value);
+        inputEl.classList.toggle("field-invalid", !ok);
+        const warn = inputEl.parentElement.querySelector(".field-warning");
+        if (warn) {
+          warn.textContent =
+            ok ? ""
+            : checkFn === isLikelyEmail ? "Doesn't look like a valid email"
+            : "Doesn't look like a valid URL";
+          warn.classList.toggle("show", !ok);
+        }
+      }
+
+      // ---------- GitHub auto-import ----------
+      async function importFromGithub() {
+        const btn = el("gh-import-btn");
+        const usernameInput = el("f-gh-username");
+        const username = (usernameInput.value || "").trim().replace(/^@/, "");
+        if (!username) {
+          showToast("Enter your GitHub username first");
+          return;
+        }
+        const original = btn.textContent;
+        btn.textContent = "Importing…";
+        btn.disabled = true;
+        try {
+          const profileRes = await fetch(
+            `https://api.github.com/users/${encodeURIComponent(username)}`,
+          );
+          if (!profileRes.ok) throw new Error("profile not found");
+          const profile = await profileRes.json();
+
+          el("f-name").value = profile.name || el("f-name").value;
+          if (profile.bio) el("f-bio").value = profile.bio;
+          if (profile.location) el("f-location").value = profile.location;
+          el("f-github").value =
+            profile.html_url || `https://github.com/${username}`;
+          if (profile.avatar_url) {
+            photoData = profile.avatar_url;
+            el("photo-preview-img").src = photoData;
+            el("photo-preview-img").classList.remove("hidden-view");
+            el("photo-placeholder").classList.add("hidden-view");
+            el("remove-photo-btn").classList.remove("hidden-view");
+          }
+
+          try {
+            const reposRes = await fetch(
+              `https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=stars&direction=desc&per_page=6`,
+            );
+            if (reposRes.ok) {
+              const repos = await reposRes.json();
+              const imported = repos
+                .filter((r) => !r.fork)
+                .slice(0, 4)
+                .map((r) => ({
+                  title: r.name,
+                  description: r.description || "",
+                  link: r.html_url,
+                  tags: r.language || "",
+                }));
+              if (imported.length) projects = imported;
+            }
+          } catch (e) {
+            /* repos are a bonus, ignore failure */
+          }
+
+          renderProjectForm();
+          syncCharCounter(el("f-bio"), 260, 400);
+          render();
+          showToast("✨ Imported from GitHub — review and tweak below");
+        } catch (e) {
+          showToast("Couldn't find that GitHub user — check the username");
+        } finally {
+          btn.textContent = original;
+          btn.disabled = false;
+        }
+      }
+
+      // ---------- Project image upload ----------
+      function handleProjectImage(evt, i) {
+        const file = evt.target.files[0];
+        if (!file) return;
+        if (file.size > 3 * 1024 * 1024) {
+          showToast("That image is a bit large — try one under 3MB");
+          evt.target.value = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          projects[i].image = e.target.result;
+          renderProjectForm();
+          render();
+        };
+        reader.readAsDataURL(file);
+      }
+      function removeProjectImage(i) {
+        projects[i].image = null;
+        renderProjectForm();
+        render();
+      }
+
+      function handleResume(evt) {
+        const file = evt.target.files[0];
+        if (!file) return;
+        if (file.size > 6 * 1024 * 1024) {
+          showToast("That PDF is a bit large — try one under 6MB");
+          evt.target.value = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          resumeData = e.target.result;
+          resumeFileName = file.name;
+          const fn = el("resume-filename");
+          fn.textContent = "✓ " + file.name;
+          fn.classList.remove("hidden-view");
+          el("remove-resume-btn").classList.remove("hidden-view");
+          render();
+        };
+        reader.readAsDataURL(file);
+      }
+      function removeResume() {
+        resumeData = null;
+        resumeFileName = "";
+        el("f-resume").value = "";
+        el("resume-filename").classList.add("hidden-view");
+        el("remove-resume-btn").classList.add("hidden-view");
+        render();
+      }
+
+      function addCustomSection() {
+        customSections.push({ title: "New section", content: "", link: "" });
+        renderCustomSectionForm();
+        render();
+      }
+      function removeCustomSection(i) {
+        customSections.splice(i, 1);
+        renderCustomSectionForm();
+        render();
+      }
+      function renderCustomSectionForm() {
+        el("custom-section-list").innerHTML = customSections
+          .map(
+            (s, i) => `
+    <div class="entry-card">
+      <button class="remove" onclick="removeCustomSection(${i})">×</button>
+      <label class="lbl !mt-0">Section title</label>
+      <input class="inp" value="${escapeAttr(s.title)}" oninput="customSections[${i}].title=this.value; render()">
+      <label class="lbl">Content</label>
+      <textarea class="inp" oninput="customSections[${i}].content=this.value; render()">${s.content}</textarea>
+      <label class="lbl">Link (optional)</label>
+      <input class="inp" value="${escapeAttr(s.link)}" oninput="customSections[${i}].link=this.value; render()">
+    </div>`,
+          )
+          .join("");
+      }
+
+      // Tabs
+      document.querySelectorAll(".tab-btn").forEach((t) => {
+        t.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((x) => x.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((x) => x.classList.add("hidden"));
+          t.classList.add("active");
+          document
+            .querySelector(`.tab-content[data-tab="${t.dataset.tab}"]`)
+            .classList.remove("hidden");
+        });
+      });
+
+      function addProject() {
+        projects.push({
+          title: "New project",
+          description: "",
+          link: "",
+          tags: "",
+        });
+        renderProjectForm();
+        render();
+      }
+      function removeProject(i) {
+        projects.splice(i, 1);
+        renderProjectForm();
+        render();
+      }
+      function renderProjectForm() {
+        el("project-list").innerHTML = projects
+          .map(
+            (p, i) => `
+    <div class="entry-card">
+      <button class="remove" onclick="removeProject(${i})">×</button>
+      <label class="lbl !mt-0">Project title</label>
+      <input class="inp" value="${escapeAttr(p.title)}" oninput="projects[${i}].title=this.value; render()">
+
+      <label class="lbl">Image (optional)</label>
+      <div class="proj-img-row">
+        ${p.image ? `<img src="${escapeAttr(p.image)}" class="proj-img-thumb">` : `<div class="proj-img-placeholder">No image</div>`}
+        <div class="proj-img-actions">
+          <label class="add-btn proj-img-upload-btn cursor-pointer">
+            ${p.image ? "Change image" : "Upload image"}
+            <input type="file" accept="image/*" class="hidden" onchange="handleProjectImage(event, ${i})">
+          </label>
+          ${p.image ? `<button onclick="removeProjectImage(${i})" class="text-[11px] text-dim hover:text-app font-mono">Remove image</button>` : ""}
+        </div>
+      </div>
+
+      <label class="lbl">Description</label>
+      <textarea class="inp" oninput="projects[${i}].description=this.value; render(); syncCharCounter(this,140,220)">${p.description}</textarea>
+      ${charCounterHtml(p.description, 140, 220)}
+
+      <label class="lbl">Link</label>
+      <input class="inp" value="${escapeAttr(p.link)}" oninput="projects[${i}].link=this.value; render(); validateField(this, isLikelyUrl)" onblur="validateField(this, isLikelyUrl)">
+      <div class="field-warning">${p.link && !isLikelyUrl(p.link) ? "Doesn't look like a valid URL" : ""}</div>
+
+      <label class="lbl">Tags (comma separated)</label>
+      <input class="inp" value="${escapeAttr(p.tags)}" oninput="projects[${i}].tags=this.value; render()">
+    </div>`,
+          )
+          .join("");
+        // Make any pre-existing invalid links visible on (re)render
+        el("project-list")
+          .querySelectorAll(".field-warning")
+          .forEach((w) => w.classList.toggle("show", !!w.textContent));
+      }
+
+      function addExperience() {
+        experience.push({
+          role: "New role",
+          company: "",
+          duration: "",
+          description: "",
+        });
+        renderExpForm();
+        render();
+      }
+      function removeExperience(i) {
+        experience.splice(i, 1);
+        renderExpForm();
+        render();
+      }
+      function renderExpForm() {
+        el("exp-list").innerHTML = experience
+          .map(
+            (x, i) => `
+    <div class="entry-card">
+      <button class="remove" onclick="removeExperience(${i})">×</button>
+      <label class="lbl !mt-0">Role</label>
+      <input class="inp" value="${escapeAttr(x.role)}" oninput="experience[${i}].role=this.value; render()">
+      <label class="lbl">Company</label>
+      <input class="inp" value="${escapeAttr(x.company)}" oninput="experience[${i}].company=this.value; render()">
+      <label class="lbl">Duration</label>
+      <input class="inp" value="${escapeAttr(x.duration)}" oninput="experience[${i}].duration=this.value; render()">
+      <label class="lbl">Description</label>
+      <textarea class="inp" oninput="experience[${i}].description=this.value; render()">${x.description}</textarea>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function addEducation() {
+        education.push({ degree: "New degree", institution: "", year: "" });
+        renderEduForm();
+        render();
+      }
+      function removeEducation(i) {
+        education.splice(i, 1);
+        renderEduForm();
+        render();
+      }
+      function renderEduForm() {
+        el("edu-list").innerHTML = education
+          .map(
+            (x, i) => `
+    <div class="entry-card">
+      <button class="remove" onclick="removeEducation(${i})">×</button>
+      <label class="lbl !mt-0">Degree</label>
+      <input class="inp" value="${escapeAttr(x.degree)}" oninput="education[${i}].degree=this.value; render()">
+      <label class="lbl">Institution</label>
+      <input class="inp" value="${escapeAttr(x.institution)}" oninput="education[${i}].institution=this.value; render()">
+      <label class="lbl">Year</label>
+      <input class="inp" value="${escapeAttr(x.year)}" oninput="education[${i}].year=this.value; render()">
+    </div>`,
+          )
+          .join("");
+      }
+
+      function getData() {
+        return {
+          photo: photoData,
+          name: el("f-name").value || "Your Name",
+          role: el("f-role").value || "Your Role",
+          bio: el("f-bio").value || "",
+          location: el("f-location").value || "",
+          email: el("f-email").value || "",
+          phone: el("f-phone").value || "",
+          github: el("f-github").value || "",
+          linkedin: el("f-linkedin").value || "",
+          twitter: el("f-twitter").value || "",
+          skills:
+            sectionToggles.skills ?
+              (el("f-skills").value || "")
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean)
+            : [],
+          projects: sectionToggles.projects ? projects : [],
+          experience: sectionToggles.experience ? experience : [],
+          education: sectionToggles.education ? education : [],
+          showContact: sectionToggles.contact,
+          showVisitorCounter: !!sectionToggles.visitorCounter,
+          sectionOrder,
+          resume: resumeData,
+          resumeFileName: resumeFileName || "resume.pdf",
+          customSections: customSections.filter(
+            (s) => s.title || s.content || s.link,
+          ),
+        };
+      }
+
+      function avatarBlock(d, size, radius, extraStyle) {
+        const initials = d.name
+          .split(" ")
+          .map((w) => w[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase();
+        if (d.photo) {
+          return `<img src="${d.photo}" style="width:${size}px;height:${size}px;border-radius:${radius};object-fit:cover;${extraStyle || ""}">`;
+        }
+        return `<div style="width:${size}px;height:${size}px;border-radius:${radius};display:flex;align-items:center;justify-content:center;font-weight:700;${extraStyle || ""}">${escapeHtml(initials)}</div>`;
+      }
+
+      // ---------- Shared: navbar, contact section, footer, scroll script ----------
+      function navSections(d) {
+        const links = [
+          ["home", "Home"],
+          ["about", "About"],
+        ];
+        if (d.skills.length) links.push(["skills", "Skills"]);
+        if (d.projects.length) links.push(["projects", "Projects"]);
+        if (d.experience.length) links.push(["experience", "Experience"]);
+        if (d.education.length) links.push(["education", "Education"]);
+        (d.customSections || []).forEach((s, i) => {
+          if (s.title) links.push(["custom-" + i, s.title]);
+        });
+        if (d.showContact !== false) links.push(["contact", "Contact"]);
+        return links;
+      }
+
+      function navHtml(d, opts) {
+        opts = opts || {};
+        const initials = d.name
+          .split(" ")
+          .map((w) => w[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase();
+        const links = navSections(d);
+        const resumeBtn =
+          d.resume ?
+            `<a href="${d.resume}" target="_blank" rel="noopener" class="nav-resume-btn">Resume ↗</a>`
+          : "";
+        return `
+<nav class="site-nav" id="siteNav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-brand"><span class="nav-badge">${escapeHtml(initials)}</span><span class="nav-name">${escapeHtml(d.name)}</span></a>
+    <div class="nav-links" id="navLinks">
+      ${links.map(([id, label]) => `<a href="#${id}" class="nav-link" data-nav="${id}">${label}</a>`).join("")}
+      ${resumeBtn}
+    </div>
+    <button class="theme-toggle-btn" id="pfThemeToggle" data-dark-default="${opts.isDarkDefault ? "true" : "false"}" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>`;
+      }
+
+      // ---------- Shared, order-aware section generators (used by every template) ----------
+      function skillsSectionHtml(d) {
+        if (!d.skills.length) return "";
+        return `<section id="skills"><h2>Skills</h2><div class="skill-pills">${d.skills
+          .map((s) => `<span class="pill">${escapeHtml(s)}</span>`)
+          .join("")}</div></section>`;
+      }
+      function projectsSectionHtml(d) {
+        if (!d.projects.length) return "";
+        return `<section id="projects"><h2>Projects</h2><div class="grid">${d.projects
+          .map(
+            (p) => `
+  <div class="card">${p.image ? `<img src="${escapeAttr(p.image)}" alt="${escapeAttr(p.title)}" class="project-thumb">` : ""}<div class="card-title">${escapeHtml(p.title)}</div><p>${escapeHtml(p.description)}</p>
+  ${p.tags ? `<div class="tags">${escapeHtml(p.tags)}</div>` : ""}
+  ${p.link ? `<div class="tags"><a href="${escapeAttr(p.link)}">${escapeHtml(p.link)}</a></div>` : ""}
+  </div>`,
+          )
+          .join("")}</div></section>`;
+      }
+      function experienceSectionHtml(d) {
+        if (!d.experience.length) return "";
+        return `<section id="experience"><h2>Experience</h2><div class="grid">${d.experience
+          .map(
+            (x) => `
+  <div class="card"><div class="card-title">${escapeHtml(x.role)}</div><div class="card-sub">${escapeHtml(x.company)} · ${escapeHtml(x.duration)}</div><p>${escapeHtml(x.description)}</p></div>`,
+          )
+          .join("")}</div></section>`;
+      }
+      function educationSectionHtml(d) {
+        if (!d.education.length) return "";
+        return `<section id="education"><h2>Education</h2><div class="grid">${d.education
+          .map(
+            (x) => `
+  <div class="card"><div class="card-title">${escapeHtml(x.degree)}</div><div class="card-sub">${escapeHtml(x.institution)} · ${escapeHtml(x.year)}</div></div>`,
+          )
+          .join("")}</div></section>`;
+      }
+      function orderedMiddleSectionsHtml(d) {
+        const defaultOrder = ["skills", "projects", "experience", "education"];
+        const order =
+          d.sectionOrder && d.sectionOrder.length ?
+            d.sectionOrder
+          : defaultOrder;
+        const map = {
+          skills: skillsSectionHtml,
+          projects: projectsSectionHtml,
+          experience: experienceSectionHtml,
+          education: educationSectionHtml,
+        };
+        return order
+          .filter((k) => map[k])
+          .map((key) => map[key](d))
+          .join("");
+      }
+
+      function customSectionsHtml(d) {
+        if (!d.customSections || !d.customSections.length) return "";
+        return d.customSections
+          .map((s, i) => {
+            if (!s.title) return "";
+            return `
+<section id="custom-${i}"><h2>${escapeHtml(s.title)}</h2>
+  <div class="card"><p>${escapeHtml(s.content || "")}</p>
+  ${s.link ? `<div class="tags"><a href="${escapeAttr(s.link)}" target="_blank" rel="noopener">${escapeHtml(s.link)}</a></div>` : ""}
+  </div>
+</section>`;
+          })
+          .join("");
+      }
+
+      function contactSection(d, heading, copy) {
+        if (d.showContact === false) return "";
+        const items = [];
+        if (d.email)
+          items.push(
+            `<a class="contact-btn" href="mailto:${escapeAttr(d.email)}">✉ ${escapeHtml(d.email)}</a>`,
+          );
+        if (d.phone)
+          items.push(
+            `<a class="contact-btn" href="tel:${escapeAttr(d.phone)}">☎ ${escapeHtml(d.phone)}</a>`,
+          );
+        if (d.location)
+          items.push(
+            `<span class="contact-btn contact-static">📍 ${escapeHtml(d.location)}</span>`,
+          );
+        if (!items.length) return "";
+        return `
+<section id="contact" class="contact-section">
+  <h2>${heading}</h2>
+  <p class="contact-copy">${copy}</p>
+  <div class="contact-actions">${items.join("")}</div>
+</section>`;
+      }
+
+      function footerHtml(d) {
+        const socials = [];
+        if (d.github)
+          socials.push(
+            `<a href="${escapeAttr(d.github)}" target="_blank" rel="noopener">GitHub</a>`,
+          );
+        if (d.linkedin)
+          socials.push(
+            `<a href="${escapeAttr(d.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>`,
+          );
+        if (d.twitter)
+          socials.push(
+            `<a href="${escapeAttr(d.twitter)}" target="_blank" rel="noopener">Twitter</a>`,
+          );
+        return `
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copy">© ${new Date().getFullYear()} ${escapeHtml(d.name)} — built with Folio Forge</span>
+    ${visitorCounterHtml(d)}
+    ${socials.length ? `<div class="footer-socials">${socials.join("")}</div>` : ""}
+    <a href="#home" class="back-to-top">Back to top ↑</a>
+  </div>
+</footer>
+<a href="#home" id="back-to-top-btn" aria-label="Back to top">↑</a>`;
+      }
+
+      function siteScript() {
+        return `
+<script>
+(function(){
+  var toggle=document.getElementById('navToggle');
+  var links=document.getElementById('navLinks');
+  var nav=document.getElementById('siteNav');
+  var fab=document.getElementById('back-to-top-btn');
+  // Visitor-facing dark/light toggle
+  var themeBtn=document.getElementById('pfThemeToggle');
+  if(themeBtn){
+    var isDarkDefault=themeBtn.dataset.darkDefault==='true';
+    var overrideClass=isDarkDefault?'pf-light':'pf-dark';
+    var onIcon=isDarkDefault?'🌙':'☀️';
+    var offIcon=isDarkDefault?'☀️':'🌙';
+    var key='ff-portfolio-theme';
+    var saved=null;
+    try{saved=localStorage.getItem(key);}catch(e){}
+    function applyState(active){
+      if(active) document.documentElement.classList.add(overrideClass);
+      else document.documentElement.classList.remove(overrideClass);
+      themeBtn.textContent=active?onIcon:offIcon;
+    }
+    applyState(saved==='alt');
+    themeBtn.addEventListener('click',function(){
+      var active=!document.documentElement.classList.contains(overrideClass);
+      applyState(active);
+      try{localStorage.setItem(key,active?'alt':'native');}catch(e){}
+    });
+  }
+  if(toggle){
+    toggle.addEventListener('click',function(){
+      var open=links.classList.toggle('open');
+      toggle.classList.toggle('open',open);
+      toggle.setAttribute('aria-expanded',open?'true':'false');
+    });
+  }
+  // Manually handle every in-page "#id" link with JS scrolling instead of
+  // native browser anchor navigation. This avoids a real bug where iframes
+  // rendered via srcdoc (like this live preview) can mis-resolve "#id" links
+  // against the parent page's URL on some setups (e.g. local file:// pages),
+  // causing the link to reload the wrong document instead of just scrolling.
+  function smoothScrollToId(id){
+    var target=document.getElementById(id);
+    if(!target) return;
+    var navEl=document.getElementById('siteNav');
+    var offset=navEl?navEl.offsetHeight+10:80;
+    var y=target.getBoundingClientRect().top+window.pageYOffset-offset;
+    window.scrollTo({top:Math.max(y,0),behavior:'smooth'});
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    var id=a.getAttribute('href').slice(1);
+    if(!id) return;
+    a.addEventListener('click',function(e){
+      if(!document.getElementById(id)) return;
+      e.preventDefault();
+      smoothScrollToId(id);
+      if(links) links.classList.remove('open');
+      if(toggle) toggle.classList.remove('open');
+    });
+  });
+  window.addEventListener('scroll',function(){
+    if(nav) nav.classList.toggle('scrolled', window.scrollY>10);
+    if(fab) fab.classList.toggle('show', window.scrollY>420);
+  });
+  var navLinksMap={};
+  document.querySelectorAll('.nav-link').forEach(function(a){navLinksMap[a.dataset.nav]=a;});
+  var ids=Object.keys(navLinksMap);
+  var sections=ids.map(function(id){return document.getElementById(id);}).filter(Boolean);
+  if('IntersectionObserver' in window && sections.length){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          Object.values(navLinksMap).forEach(function(a){a.classList.remove('active');});
+          var link=navLinksMap[en.target.id];
+          if(link) link.classList.add('active');
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    sections.forEach(function(s){obs.observe(s);});
+  }
+  // Gentle scroll-reveal for sections/cards
+  var revealTargets=document.querySelectorAll('section, .card, .glass:not(.hero), .tpl-pick-card');
+  if('IntersectionObserver' in window && revealTargets.length){
+    revealTargets.forEach(function(t){t.classList.add('reveal-init');});
+    var robs=new IntersectionObserver(function(entries,o){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('reveal-in');
+          o.unobserve(en.target);
+        }
+      });
+    },{threshold:0.12});
+    revealTargets.forEach(function(t){robs.observe(t);});
+  }
+})();
+<\/script>`;
+      }
+
+      function navCss(o) {
+        return `
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+.site-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:${o.navBg};border-bottom:1px solid ${o.border};transition:box-shadow .2s,background .2s;}
+.site-nav.scrolled{box-shadow:0 6px 24px rgba(0,0,0,0.10);}
+.nav-inner{max-width:${o.navMaxWidth || o.maxWidth || "800px"};margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:${o.text};font-weight:700;}
+.nav-badge{width:30px;height:30px;border-radius:${o.badgeRadius || "8px"};background:${o.accent};color:${o.badgeColor || "#fff"};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.nav-name{font-size:14px;white-space:nowrap;}
+.nav-links{display:flex;align-items:center;gap:22px;}
+.nav-link{color:${o.dim};text-decoration:none;font-size:13px;font-weight:600;position:relative;padding:4px 0;transition:color .15s;}
+.nav-link:hover,.nav-link.active{color:${o.accent};}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:${o.accent};border-radius:2px;}
+.nav-resume-btn{background:${o.accent};color:${o.badgeColor || "#fff"};text-decoration:none;font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:${o.badgeRadius === "2px" ? "2px" : "20px"};white-space:nowrap;}
+.theme-toggle-btn{background:transparent;border:1px solid ${o.border};color:${o.text};width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0;margin-left:6px;padding:0;}
+.theme-toggle-btn:hover{border-color:${o.accent};}
+.nav-toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;}
+.nav-toggle span{width:20px;height:2px;background:${o.text};border-radius:2px;transition:.2s;}
+.nav-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+@media (max-width:720px){
+  .nav-toggle{display:flex;order:3;}
+  .nav-links{position:absolute;top:100%;left:0;right:0;background:${o.mobileBg || o.navBg};flex-direction:column;align-items:flex-start;gap:2px;padding:0 24px;max-height:0;overflow:hidden;visibility:hidden;border-bottom:0 solid ${o.border};transition:max-height .25s ease,padding .25s ease,border-width .25s ease,visibility 0s linear .25s;}
+  .nav-links.open{max-height:420px;padding:10px 24px 18px;border-bottom-width:1px;visibility:visible;transition:max-height .25s ease,padding .25s ease,border-width .25s ease;}
+  .nav-link{padding:10px 0;width:100%;}
+  .nav-resume-btn{margin-top:8px;display:inline-block;}
+}
+.contact-section{max-width:${o.maxWidth || "760px"};margin:0 auto;padding:70px 24px;text-align:center;}
+.contact-copy{color:${o.dim};max-width:480px;margin:0 auto 26px;font-size:15px;}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.contact-btn{${o.contactBtnStyle}}
+.contact-btn:hover{${o.contactBtnHover || ""}}
+.site-footer{border-top:1px solid ${o.border};}
+.footer-inner{max-width:${o.maxWidth || "800px"};margin:0 auto;padding:26px 24px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;font-size:12px;color:${o.dim};}
+.footer-socials{display:flex;gap:16px;}
+.footer-socials a{color:${o.dim};text-decoration:none;font-weight:600;}
+.footer-socials a:hover{color:${o.accent};}
+.back-to-top{color:${o.accent};text-decoration:none;font-weight:600;}
+#back-to-top-btn{position:fixed;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;background:${o.accent};color:${o.badgeColor || "#fff"};display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;opacity:0;pointer-events:none;transform:translateY(10px);transition:.2s;box-shadow:0 8px 24px rgba(0,0,0,0.25);z-index:60;}
+#back-to-top-btn.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;}
+.reveal-init{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.reveal-in{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){.reveal-init{opacity:1;transform:none;transition:none;}}
+html.pf-dark{--bg:#0e0e12 !important;--panel:#18181f !important;--panel2:#1f1f27 !important;--ink:#f2f2f5 !important;--dim:#9a9aa8 !important;--line:#2c2c35 !important;}
+html.pf-light{--bg:#fafafa !important;--panel:#ffffff !important;--panel2:#f2f2f2 !important;--ink:#16161a !important;--dim:#5a5a66 !important;--line:#e4e4ea !important;}
+.visitor-badge{display:inline-flex;align-items:center;opacity:0.85;}
+.project-thumb{width:100%;height:170px;object-fit:cover;border-radius:${o.radius || "10px"};margin-bottom:14px;display:block;}
+`;
+      }
+
+      function tplMinimal(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F1EA;--ink:#22201C;--accent:#B8532E;--line:#DCD7CB;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+.wrap{max-width:760px;margin:0 auto;padding:70px 24px 40px;}
+h1{font-family:'Fraunces',serif;font-size:44px;margin:0 0 4px;font-weight:700;}
+.role{color:var(--accent);font-weight:600;margin-bottom:20px;}
+.bio{font-size:17px;color:#4a4640;max-width:600px;}
+.meta{display:flex;gap:16px;flex-wrap:wrap;margin:24px 0;font-size:14px;color:#6b665d;}
+.links a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);margin-right:16px;font-weight:500;}
+section{margin-top:56px;}
+h2{font-family:'Fraunces',serif;font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:24px;}
+.contact-section h2{display:inline-block;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;}
+.card{border-bottom:1px solid var(--line);padding:24px 0;}
+.card:last-child{border-bottom:none;}
+.card-title{font-weight:600;font-size:17px;margin-bottom:4px;}
+.card-sub{color:var(--accent);font-size:13px;font-weight:600;margin-bottom:8px;}
+.card p{color:#4a4640;font-size:15px;margin:6px 0;}
+.tags{font-family:monospace;font-size:12px;color:#8a8478;margin-top:8px;}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:11px 22px;border-radius:6px;font-weight:600;font-size:14px;}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+${navCss({ navMaxWidth: "1200px", navBg: "rgba(244,241,234,0.85)", mobileBg: "#F4F1EA", border: "var(--line)", text: "var(--ink)", dim: "#6b665d", accent: "var(--accent)", badgeRadius: "50%", maxWidth: "760px", contactBtnStyle: "background:#fff;border:1px solid var(--line);color:var(--ink);padding:11px 20px;border-radius:24px;text-decoration:none;font-size:13px;font-weight:600;", contactBtnHover: "border-color:var(--accent);color:var(--accent);" })}
+</style></head><body>
+${navHtml(d, { isDarkDefault: false })}
+<div class="wrap" id="home">
+  ${avatarBlock(d, 56, "50%", "background:var(--accent);color:#fff;font-family:Fraunces,serif;font-size:20px;margin-bottom:24px;")}
+  <h1>${escapeHtml(d.name)}</h1>
+  <div class="role">${escapeHtml(d.role)}</div>
+  <div class="meta">${d.location ? `<span>📍 ${escapeHtml(d.location)}</span>` : ""}${d.email ? `<span>✉ ${escapeHtml(d.email)}</span>` : ""}</div>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+    ${d.twitter ? `<a href="${escapeAttr(d.twitter)}">Twitter</a>` : ""}
+  </div>
+  <div class="hero-ctas">
+    ${d.projects.length ? `<a href="#projects" class="btn">View projects</a>` : ""}
+    <a href="#contact" class="btn ghost">Get in touch</a>
+  </div>
+  <section id="about"><h2>About</h2><p class="bio">${escapeHtml(d.bio)}</p></section>
+  ${orderedMiddleSectionsHtml(d)}
+</div>
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Have a project in mind or just want to say hi? My inbox is always open.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      function tplDark(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f11;--panel:#15181c;--ink:#e6e8eb;--dim:#8a919c;--accent:#7CFF6B;--line:#252a30;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Mono',monospace;line-height:1.7;}
+.wrap{max-width:760px;margin:0 auto;padding:60px 24px 40px;}
+.tag{color:var(--accent);font-size:13px;}
+h1{font-family:'Space Grotesk',sans-serif;font-size:42px;margin:14px 0 6px;}
+.role{color:var(--dim);margin-bottom:20px;}
+.bio{color:#c3c8cf;max-width:600px;font-size:15px;}
+.links{margin:24px 0;}
+.links a{color:var(--accent);text-decoration:none;margin-right:18px;border:1px solid var(--line);padding:6px 14px;border-radius:6px;font-size:13px;}
+section{margin-top:60px;}
+h2{font-family:'Space Grotesk',sans-serif;color:var(--ink);font-size:13px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:22px;}
+h2::before{content:"// ";color:var(--accent);}
+.contact-section h2::before{content:"// ";}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 12px;font-size:12px;color:var(--accent);}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;margin-bottom:14px;}
+.card-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--ink);}
+.card-sub{color:var(--accent);font-size:12px;margin:4px 0 10px;}
+.card p{color:#b7bcc4;font-size:14px;margin:6px 0;}
+.tags{font-size:12px;color:var(--dim);margin-top:10px;}
+.tags a{color:var(--accent);}
+.btn{display:inline-block;background:var(--accent);color:#0d0f11;text-decoration:none;padding:10px 20px;border-radius:6px;font-weight:700;font-size:13px;}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);}
+${navCss({ navMaxWidth: "1200px", navBg: "rgba(13,15,17,0.85)", mobileBg: "#0d0f11", border: "var(--line)", text: "var(--ink)", dim: "var(--dim)", accent: "var(--accent)", badgeRadius: "6px", badgeColor: "#0d0f11", maxWidth: "760px", contactBtnStyle: "background:var(--panel);border:1px solid var(--line);color:var(--accent);padding:11px 20px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600;", contactBtnHover: "border-color:var(--accent);" })}
+</style></head><body>
+${navHtml(d, { isDarkDefault: true })}
+<div class="wrap" id="home">
+  ${avatarBlock(d, 64, "8px", "border:1px solid var(--line);")}
+  <div class="tag">&lt;whoami/&gt;</div>
+  <h1>${escapeHtml(d.name)}</h1>
+  <div class="role">${escapeHtml(d.role)}${d.location ? ` · ${escapeHtml(d.location)}` : ""}</div>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub ↗</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn ↗</a>` : ""}
+    ${d.email ? `<a href="mailto:${escapeAttr(d.email)}">Email</a>` : ""}
+  </div>
+  <div class="hero-ctas">
+    ${d.projects.length ? `<a href="#projects" class="btn">view projects</a>` : ""}
+    <a href="#contact" class="btn ghost">get in touch</a>
+  </div>
+  <section id="about"><h2>whoami</h2><p class="bio">${escapeHtml(d.bio)}</p></section>
+  ${orderedMiddleSectionsHtml(d)}
+</div>
+${customSectionsHtml(d)}
+${contactSection(d, "get in touch", "Have a role, project, or bug you can't crack? My terminal is always open.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      function tplBold(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12131A;--accent1:#FF5C39;--accent2:#6E8EFF;--panel:#F7F7FA;--line:#E6E6ED;}
+*{box-sizing:border-box;}
+body{margin:0;background:#fff;color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+.hero{background:linear-gradient(135deg,var(--accent1),var(--accent2));padding:60px 24px 70px;color:#fff;}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px;}
+.hero .wrap{padding:0;}
+.eyebrow{font-size:13px;letter-spacing:0.15em;text-transform:uppercase;opacity:0.85;font-weight:600;}
+h1{font-family:'Sora',sans-serif;font-size:48px;margin:14px 0 8px;font-weight:800;}
+.role{font-size:18px;font-weight:600;opacity:0.95;}
+.bio{margin-top:18px;max-width:600px;font-size:16px;opacity:0.95;}
+.links{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;}
+.links a{background:rgba(255,255,255,0.18);color:#fff;text-decoration:none;padding:9px 18px;border-radius:24px;font-size:14px;font-weight:600;}
+.hero-ctas{margin-top:26px;}
+.hero-ctas .btn{background:#fff;color:var(--accent1);}
+.hero-ctas .btn.ghost{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.5);}
+section{padding:56px 24px;max-width:800px;margin:0 auto;}
+h2{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;margin-bottom:26px;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:10px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:8px 16px;font-size:13px;font-weight:600;}
+.grid{display:grid;gap:16px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;}
+.card-title{font-family:'Sora',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;}
+.card-sub{color:var(--accent1);font-size:13px;font-weight:600;margin-bottom:10px;}
+.card p{color:#4a4a55;font-size:14px;margin:6px 0;}
+.tags{font-size:12px;color:#8a8a95;margin-top:10px;}
+.tags a{color:var(--accent2);text-decoration:none;font-weight:600;}
+.btn{display:inline-block;background:var(--accent1);color:#fff;text-decoration:none;padding:11px 22px;border-radius:24px;font-weight:700;font-size:14px;}
+${navCss({ navMaxWidth: "1200px", navBg: "rgba(255,255,255,0.85)", mobileBg: "#fff", border: "var(--line)", text: "var(--ink)", dim: "#6b6b77", accent: "var(--accent1)", badgeRadius: "50%", maxWidth: "800px", contactBtnStyle: "background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:11px 20px;border-radius:24px;text-decoration:none;font-size:13px;font-weight:600;", contactBtnHover: "border-color:var(--accent1);color:var(--accent1);" })}
+</style></head><body>
+${navHtml(d, { isDarkDefault: false })}
+<div class="hero" id="home"><div class="wrap">
+  ${avatarBlock(d, 72, "50%", "background:rgba(255,255,255,0.25);color:#fff;font-size:24px;font-family:Sora,sans-serif;margin-bottom:14px;border:2px solid rgba(255,255,255,0.5);")}
+  <div class="eyebrow">Portfolio</div>
+  <h1>${escapeHtml(d.name)}</h1>
+  <div class="role">${escapeHtml(d.role)}${d.location ? ` · ${escapeHtml(d.location)}` : ""}</div>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+    ${d.email ? `<a href="mailto:${escapeAttr(d.email)}">Email me</a>` : ""}
+  </div>
+  <div class="hero-ctas">
+    ${d.projects.length ? `<a href="#projects" class="btn">View projects</a>` : ""}
+    <a href="#contact" class="btn ghost">Get in touch</a>
+  </div>
+</div></div>
+<section id="about"><h2>About</h2><p class="bio" style="opacity:1;color:#4a4a55;">${escapeHtml(d.bio)}</p></section>
+${orderedMiddleSectionsHtml(d)}
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Got a project brief, a role, or just want to say hey? Let's talk.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      function tplNeubrutal(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B0B0B;--accent:#FFE347;--accent2:#FF3EA5;--bg:#FDFCF7;--line:#0B0B0B;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+.wrap{max-width:780px;margin:0 auto;padding:48px 24px 40px;}
+.hero-box{border:3px solid var(--ink);border-radius:0;padding:32px;background:var(--accent);box-shadow:8px 8px 0 var(--ink);margin-bottom:40px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+h1{font-family:'Space Grotesk',sans-serif;font-size:38px;margin:0 0 4px;font-weight:800;}
+.role{font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.04em;}
+.bio{font-size:16px;margin-top:24px;max-width:640px;}
+.links{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+.links a{color:var(--ink);text-decoration:none;font-weight:700;background:#fff;border:2px solid var(--ink);padding:8px 16px;box-shadow:3px 3px 0 var(--ink);font-size:13px;}
+.hero-ctas .btn{background:var(--ink);color:var(--accent);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--accent2);border-radius:0;}
+.hero-ctas .btn.ghost{background:#fff;color:var(--ink);}
+section{margin-top:48px;}
+h2{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;display:inline-block;background:var(--accent2);color:#fff;padding:4px 12px;border:2px solid var(--ink);margin-bottom:22px;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:#fff;border:2px solid var(--ink);padding:6px 14px;font-size:13px;font-weight:600;}
+.card{border:2px solid var(--ink);padding:20px;margin-bottom:16px;box-shadow:5px 5px 0 var(--ink);background:#fff;}
+.card-title{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:17px;}
+.card-sub{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--accent2);margin:4px 0 10px;}
+.card p{font-size:14px;margin:6px 0;}
+.tags{font-family:monospace;font-size:12px;margin-top:8px;}
+.btn{display:inline-block;text-decoration:none;padding:10px 20px;font-weight:800;font-size:13px;text-transform:uppercase;}
+${navCss({ navMaxWidth: "1200px", navBg: "var(--bg)", mobileBg: "var(--bg)", border: "3px solid var(--ink)", text: "var(--ink)", dim: "var(--ink)", accent: "var(--accent2)", badgeRadius: "0", badgeColor: "var(--ink)", maxWidth: "780px", contactBtnStyle: "background:#fff;border:2px solid var(--ink);color:var(--ink);padding:10px 18px;box-shadow:3px 3px 0 var(--ink);text-decoration:none;font-size:13px;font-weight:700;", contactBtnHover: "" })}
+.site-nav{border-bottom:${"3px solid var(--ink)"} !important;}
+#back-to-top-btn{border-radius:0;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
+.nav-badge{background:var(--accent) !important;color:var(--ink) !important;border:2px solid var(--ink);}
+</style></head><body>
+${navHtml(d, { isDarkDefault: false })}
+<div class="wrap" id="home">
+  <div class="hero-box">
+    ${avatarBlock(d, 84, "0", `background:#fff;color:var(--ink);font-size:26px;font-family:'Space Grotesk',sans-serif;border:3px solid var(--ink);`)}
+    <div>
+      <h1>${escapeHtml(d.name)}</h1>
+      <div class="role">${escapeHtml(d.role)}</div>
+    </div>
+  </div>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+    ${d.email ? `<a href="mailto:${escapeAttr(d.email)}">Email</a>` : ""}
+  </div>
+  <div class="hero-ctas">
+    ${d.projects.length ? `<a href="#projects" class="btn">View projects</a>` : ""}
+    <a href="#contact" class="btn ghost">Get in touch</a>
+  </div>
+  <section id="about"><h2>About</h2><p class="bio">${escapeHtml(d.bio)}</p></section>
+  ${orderedMiddleSectionsHtml(d)}
+</div>
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Have a wild idea, a role to fill, or just want to say hi? Hit me up.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      function tplEditorial(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF9F4;--ink:#211F1B;--accent:#8A6D3B;--line:#E3DCCB;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.7;}
+.layout{max-width:960px;margin:0 auto;padding:80px 24px 100px;display:grid;grid-template-columns:260px 1fr;gap:60px;}
+@media (max-width:720px){.layout{grid-template-columns:1fr;gap:36px;}}
+.sidebar{position:sticky;top:60px;align-self:start;}
+h1{font-family:'Playfair Display',serif;font-size:34px;margin:16px 0 6px;font-weight:700;}
+.role{color:var(--accent);font-style:italic;font-size:15px;margin-bottom:18px;}
+.meta{font-size:13px;color:#6b6558;margin-bottom:6px;}
+.links{margin-top:18px;}
+.links a{display:block;color:var(--ink);text-decoration:none;font-size:13px;border-bottom:1px solid var(--line);padding:6px 0;}
+.bio{font-size:17px;max-width:600px;margin-bottom:10px;font-family:'Playfair Display',serif;font-style:italic;color:#4a453c;}
+section{margin-top:50px;}
+h2{font-family:'Playfair Display',serif;font-size:13px;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:22px;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{border:1px solid var(--line);border-radius:2px;padding:5px 12px;font-size:12px;}
+.card{border-top:1px solid var(--line);padding:22px 0;}
+.card-title{font-family:'Playfair Display',serif;font-weight:700;font-size:19px;}
+.card-sub{color:var(--accent);font-size:13px;font-style:italic;margin:4px 0 8px;}
+.card p{font-size:14px;color:#4a453c;margin:6px 0;}
+.tags{font-size:12px;color:#8a8478;margin-top:8px;}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:10px 20px;font-size:13px;font-weight:600;}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+${navCss({ navMaxWidth: "1200px", navBg: "rgba(251,249,244,0.9)", mobileBg: "#FBF9F4", border: "var(--line)", text: "var(--ink)", dim: "#6b6558", accent: "var(--accent)", badgeRadius: "4px", maxWidth: "960px", contactBtnStyle: "background:transparent;border:1px solid var(--line);color:var(--ink);padding:11px 20px;text-decoration:none;font-size:13px;font-weight:600;", contactBtnHover: "border-color:var(--accent);color:var(--accent);" })}
+</style></head><body>
+${navHtml(d, { isDarkDefault: false })}
+<div class="layout" id="home">
+  <div class="sidebar">
+    ${avatarBlock(d, 110, "4px", "object-position:center;")}
+    <h1>${escapeHtml(d.name)}</h1>
+    <div class="role">${escapeHtml(d.role)}</div>
+    ${d.location ? `<div class="meta">📍 ${escapeHtml(d.location)}</div>` : ""}
+    ${d.email ? `<div class="meta">✉ ${escapeHtml(d.email)}</div>` : ""}
+    <div class="links">
+      ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+      ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+      ${d.twitter ? `<a href="${escapeAttr(d.twitter)}">Twitter</a>` : ""}
+    </div>
+    <div class="hero-ctas">
+      ${d.projects.length ? `<a href="#projects" class="btn">Work</a>` : ""}
+      <a href="#contact" class="btn ghost">Contact</a>
+    </div>
+  </div>
+  <div>
+    <section id="about"><h2>About</h2><p class="bio">"${escapeHtml(d.bio)}"</p></section>
+    ${orderedMiddleSectionsHtml(d)}
+  </div>
+</div>
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Open to new commissions, collaborations, and interesting conversations.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      function tplGlass(d) {
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#F5F4FF;--dim:#B9B8D6;--accent:#B18CFF;}
+*{box-sizing:border-box;}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;
+  background:radial-gradient(circle at 15% 10%,#4a2fa8 0%,transparent 45%),radial-gradient(circle at 85% 20%,#2f5fa8 0%,transparent 45%),radial-gradient(circle at 50% 90%,#7a2fa8 0%,transparent 50%),#100c24;
+  background-attachment:fixed;}
+.wrap{max-width:800px;margin:0 auto;padding:80px 24px 100px;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.14);border-radius:20px;padding:30px;}
+.card{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.14);border-radius:20px;padding:30px;margin-bottom:16px;}
+.hero{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-bottom:36px;}
+h1{font-family:'Sora',sans-serif;font-size:36px;margin:0 0 6px;font-weight:800;}
+.role{color:var(--accent);font-weight:600;font-size:15px;}
+.bio{font-size:15px;color:var(--dim);max-width:600px;margin-top:16px;}
+.links{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+.links a{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);padding:8px 16px;border-radius:20px;}
+section{margin-top:34px;}
+h2{font-family:'Sora',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:20px;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:20px;padding:6px 14px;font-size:12px;}
+.grid{display:grid;gap:14px;}
+.card-title{font-family:'Sora',sans-serif;font-weight:700;font-size:16px;}
+.card-sub{color:var(--accent);font-size:12px;margin:4px 0 8px;}
+.card p{color:var(--dim);font-size:14px;margin:6px 0;}
+.tags{font-size:12px;color:var(--dim);margin-top:8px;}
+.tags a{color:var(--accent);}
+.btn{display:inline-block;background:var(--accent);color:#100c24;text-decoration:none;padding:11px 22px;border-radius:24px;font-weight:700;font-size:14px;}
+.btn.ghost{background:rgba(255,255,255,0.08);color:var(--ink);border:1px solid rgba(255,255,255,0.16);}
+.hero-ctas{margin-top:22px;}
+${navCss({ navMaxWidth: "1200px", navBg: "rgba(16,12,36,0.6)", mobileBg: "#160f36", border: "rgba(255,255,255,0.14)", text: "var(--ink)", dim: "var(--dim)", accent: "var(--accent)", badgeRadius: "50%", maxWidth: "800px", contactBtnStyle: "background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);color:var(--ink);padding:11px 20px;border-radius:24px;text-decoration:none;font-size:13px;font-weight:600;", contactBtnHover: "border-color:var(--accent);color:var(--accent);" })}
+.contact-section .glass{max-width:520px;margin:0 auto;}
+</style></head><body>
+${navHtml(d, { isDarkDefault: true })}
+<div class="wrap" id="home">
+  <div class="glass hero">
+    ${avatarBlock(d, 74, "50%", "border:2px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-family:Sora,sans-serif;font-size:24px;")}
+    <div>
+      <h1>${escapeHtml(d.name)}</h1>
+      <div class="role">${escapeHtml(d.role)}${d.location ? ` · ${escapeHtml(d.location)}` : ""}</div>
+      <div class="hero-ctas">
+        ${d.projects.length ? `<a href="#projects" class="btn">View projects</a>` : ""}
+        <a href="#contact" class="btn ghost">Get in touch</a>
+      </div>
+    </div>
+  </div>
+  <section id="about"><h2>About</h2><p class="bio">${escapeHtml(d.bio)}</p></section>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+    ${d.email ? `<a href="mailto:${escapeAttr(d.email)}">Email me</a>` : ""}
+  </div>
+  ${orderedMiddleSectionsHtml(d)}
+</div>
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Have a project, a role, or just want to say hi? Drop a line anytime.")}
+${footerHtml(d)}
+${siteScript()}
+</body></html>`;
+      }
+
+      // ---------- Extra templates: shared skeleton, 6 distinct skins ----------
+      const SKINS = {
+        mono: {
+          label: "Mono",
+          isDark: false,
+          fontDisplay: "'IBM Plex Mono',monospace",
+          fontBody: "'IBM Plex Mono',monospace",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
+          bg: "#fbfbf9",
+          panel: "#ffffff",
+          ink: "#111111",
+          dim: "#68675f",
+          accent: "#0a6b41",
+          line: "#e3e2dc",
+          radius: "4px",
+          pillRadius: "4px",
+          heroBg: "#eef0ea",
+          heroText: "#111111",
+          heroLinkBg: "rgba(0,0,0,0.06)",
+          heroBorder: "rgba(0,0,0,0.12)",
+        },
+        aurora: {
+          label: "Aurora",
+          isDark: true,
+          fontDisplay: "'Space Grotesk',sans-serif",
+          fontBody: "'Inter',sans-serif",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+          bg: "#100f24",
+          panel: "rgba(255,255,255,0.06)",
+          ink: "#f4f2ff",
+          dim: "#aca8dd",
+          accent: "#ff7ce5",
+          line: "rgba(255,255,255,0.14)",
+          radius: "18px",
+          pillRadius: "20px",
+          heroBg:
+            "radial-gradient(circle at 15% 20%,#7c5cff,transparent 55%),radial-gradient(circle at 85% 25%,#ff7ce5,transparent 50%),radial-gradient(circle at 50% 100%,#34e0c4,transparent 55%),#100f24",
+          heroText: "#ffffff",
+          heroLinkBg: "rgba(255,255,255,0.12)",
+          heroBorder: "rgba(255,255,255,0.22)",
+        },
+        luxury: {
+          label: "Luxury",
+          isDark: true,
+          fontDisplay: "'Fraunces',serif",
+          fontBody: "'Inter',sans-serif",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+          bg: "#0c0c0c",
+          panel: "#161616",
+          ink: "#f2ede1",
+          dim: "#a39878",
+          accent: "#c9a24b",
+          line: "#2a2a2a",
+          radius: "2px",
+          pillRadius: "2px",
+          heroBg: "#0c0c0c",
+          heroText: "#f2ede1",
+          heroLinkBg: "rgba(201,162,75,0.12)",
+          heroBorder: "rgba(201,162,75,0.4)",
+        },
+        retro: {
+          label: "Retro Wave",
+          isDark: true,
+          fontDisplay: "'Space Grotesk',sans-serif",
+          fontBody: "'Inter',sans-serif",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+          bg: "#1a0b2e",
+          panel: "#26123f",
+          ink: "#ffe9fb",
+          dim: "#c39bdc",
+          accent: "#00e5ff",
+          line: "#3d1f5c",
+          radius: "10px",
+          pillRadius: "20px",
+          heroBg: "linear-gradient(180deg,#2d1155 0%,#4a1942 55%,#ff3ea5 100%)",
+          heroText: "#ffffff",
+          heroLinkBg: "rgba(255,255,255,0.15)",
+          heroBorder: "rgba(255,255,255,0.3)",
+        },
+        corporate: {
+          label: "Corporate",
+          isDark: false,
+          fontDisplay: "'Space Grotesk',sans-serif",
+          fontBody: "'Inter',sans-serif",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+          bg: "#f7f9fc",
+          panel: "#ffffff",
+          ink: "#101828",
+          dim: "#5c6b82",
+          accent: "#2563eb",
+          line: "#e2e8f2",
+          radius: "10px",
+          pillRadius: "20px",
+          heroBg: "#101828",
+          heroText: "#ffffff",
+          heroLinkBg: "rgba(255,255,255,0.1)",
+          heroBorder: "rgba(255,255,255,0.2)",
+        },
+        pastel: {
+          label: "Pastel Soft",
+          isDark: false,
+          fontDisplay: "'Fraunces',serif",
+          fontBody: "'Inter',sans-serif",
+          fontLink:
+            "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+          bg: "#fdf6f9",
+          panel: "#ffffff",
+          ink: "#3b2f3a",
+          dim: "#8c7c8a",
+          accent: "#e5688f",
+          line: "#f3dbe6",
+          radius: "22px",
+          pillRadius: "24px",
+          heroBg: "linear-gradient(135deg,#ffe1ec,#e3e0ff)",
+          heroText: "#3b2f3a",
+          heroLinkBg: "rgba(255,255,255,0.55)",
+          heroBorder: "rgba(59,47,58,0.15)",
+        },
+      };
+
+      function tplSkin(d, key) {
+        const s = SKINS[key];
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(d.name)} — ${escapeHtml(d.role)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="${s.fontLink}" rel="stylesheet">
+<style>
+:root{--bg:${s.bg};--panel:${s.panel};--ink:${s.ink};--dim:${s.dim};--accent:${s.accent};--line:${s.line};}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:${s.fontBody};line-height:1.65;}
+.hero{background:${s.heroBg};color:${s.heroText};padding:64px 24px 68px;}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+.hero .wrap{padding:0;}
+h1{font-family:${s.fontDisplay};font-size:40px;margin:16px 0 6px;font-weight:700;}
+.role{font-size:15px;font-weight:600;opacity:0.92;}
+.bio{margin-top:16px;max-width:600px;font-size:15px;opacity:0.95;}
+section .bio{opacity:1;color:var(--dim);}
+.links{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;}
+.links a{background:${s.heroLinkBg};color:inherit;text-decoration:none;padding:8px 16px;border-radius:${s.pillRadius};font-size:13px;font-weight:600;border:1px solid ${s.heroBorder};}
+.btn{display:inline-block;background:var(--accent);color:${s.bg};text-decoration:none;padding:11px 22px;border-radius:${s.radius};font-weight:700;font-size:14px;}
+.btn.ghost{background:${s.heroLinkBg};color:inherit;border:1px solid ${s.heroBorder};}
+section{padding:48px 24px;max-width:760px;margin:0 auto;}
+h2{font-family:${s.fontDisplay};font-size:13px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:22px;}
+.skill-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:${s.pillRadius};padding:6px 14px;font-size:13px;color:var(--ink);}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:${s.radius};padding:20px;margin-bottom:14px;}
+.card-title{font-family:${s.fontDisplay};font-weight:700;font-size:16px;}
+.card-sub{color:var(--accent);font-size:12px;font-weight:600;margin:4px 0 10px;}
+.card p{font-size:14px;color:var(--dim);margin:6px 0;}
+.tags{font-size:12px;color:var(--dim);margin-top:8px;}
+.tags a{color:var(--accent);text-decoration:none;font-weight:600;}
+${navCss({ navMaxWidth: "1200px", navBg: "var(--bg)", mobileBg: "var(--bg)", border: "var(--line)", text: "var(--ink)", dim: "var(--dim)", accent: "var(--accent)", badgeRadius: s.radius === "2px" ? "2px" : "50%", maxWidth: "760px", contactBtnStyle: `background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:11px 20px;border-radius:${s.pillRadius};text-decoration:none;font-size:13px;font-weight:600;`, contactBtnHover: "border-color:var(--accent);color:var(--accent);" })}
+</style></head><body>
+${navHtml(d, { isDarkDefault: !!s.isDark })}
+<div class="hero" id="home"><div class="wrap">
+  ${avatarBlock(d, 68, s.radius === "2px" ? "2px" : "50%", `background:${s.heroLinkBg};color:${s.heroText};font-family:${s.fontDisplay};font-size:22px;border:1px solid ${s.heroBorder};margin-bottom:12px;`)}
+  <h1>${escapeHtml(d.name)}</h1>
+  <div class="role">${escapeHtml(d.role)}${d.location ? ` · ${escapeHtml(d.location)}` : ""}</div>
+  <p class="bio">${escapeHtml(d.bio)}</p>
+  <div class="links">
+    ${d.github ? `<a href="${escapeAttr(d.github)}">GitHub</a>` : ""}
+    ${d.linkedin ? `<a href="${escapeAttr(d.linkedin)}">LinkedIn</a>` : ""}
+    ${d.email ? `<a href="mailto:${escapeAttr(d.email)}">Email</a>` : ""}
+  </div>
+  <div class="hero-ctas">
+    ${d.projects.length ? `<a href="#projects" class="btn">View projects</a>` : ""}
+    <a href="#contact" class="btn ghost">Get in touch</a>
+  </div>
+</div></div>
+<section id="about"><h2>About</h2><p class="bio">${escapeHtml(d.bio)}</p></section>
+${orderedMiddleSectionsHtml(d)}
+${customSectionsHtml(d)}
+${contactSection(d, "Get in touch", "Have a project, a role, or just want to say hi? Drop a line anytime.")}
+${footerHtml(d)}
+${siteScript()}
+ <script src="/pwa.js"></script>
+</body></html>`;
+      }
+
+      // ---------- Font pairing + hero background overrides (post-process, like accent) ----------
+      const FONT_PAIRS = {
+        classic: {
+          display: "'Fraunces',serif",
+          body: "'Inter',sans-serif",
+          link: "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+        },
+        modern: {
+          display: "'Space Grotesk',sans-serif",
+          body: "'Inter',sans-serif",
+          link: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+        },
+        mono: {
+          display: "'IBM Plex Mono',monospace",
+          body: "'IBM Plex Mono',monospace",
+          link: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
+        },
+        elegant: {
+          display: "'Playfair Display',serif",
+          body: "'Inter',sans-serif",
+          link: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap",
+        },
+      };
+      function applyFontOverride(html, key) {
+        if (!key || !FONT_PAIRS[key]) return html;
+        const fp = FONT_PAIRS[key];
+        const block = `<link href="${fp.link}" rel="stylesheet"><style>
+h1,h2,h3,.card-title,.nav-name,.nav-brand,.eyebrow,.role,.footer-name{font-family:${fp.display} !important;}
+body,p,.bio,.card p,.contact-copy,.tags,.pill,.links a,.contact-btn,.card-sub{font-family:${fp.body} !important;}
+</style>`;
+        return html.replace("</head>", block + "</head>");
+      }
+
+      const HERO_BG_PRESETS = {
+        warm: "linear-gradient(135deg,#ff7e5f,#feb47b)",
+        ocean: "linear-gradient(135deg,#2193b0,#6dd5ed)",
+        purple: "linear-gradient(135deg,#7c5cff,#ff7ce5)",
+        midnight: "linear-gradient(135deg,#0f2027,#2c5364)",
+        dark: "#111111",
+        cream: "#F4F1EA",
+      };
+      function applyHeroBackground(html, key, photo) {
+        if (!key) return html;
+        let block;
+        if (key === "photo" && photo) {
+          block = `<style>
+#home{position:relative !important;background:url(${photo}) center/cover !important;color:#fff !important;}
+#home::before{content:"";position:absolute;inset:0;background:rgba(10,10,15,0.55);z-index:0;}
+#home > *{position:relative;z-index:1;}
+#home a,#home h1,#home .role,#home .bio{color:#fff !important;}
+</style>`;
+        } else if (HERO_BG_PRESETS[key]) {
+          const isDark =
+            key === "dark" ||
+            key === "midnight" ||
+            key === "purple" ||
+            key === "ocean" ||
+            key === "warm";
+          block = `<style>
+#home{background:${HERO_BG_PRESETS[key]} !important;}
+${isDark ? `#home,#home h1,#home .role,#home .bio,#home a{color:#fff !important;}` : ""}
+</style>`;
+        } else {
+          return html;
+        }
+        return html.replace("</head>", block + "</head>");
+      }
+
+      function visitorCounterHtml(d) {
+        if (!d.showVisitorCounter) return "";
+        const slug =
+          (d.name || "portfolio")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "") || "portfolio";
+        return `<div class="visitor-badge"><img src="https://visitor-badge.laobi.icu/badge?page_id=${slug}-folioforge&text=Visitors" alt="Visitor count" loading="lazy" style="height:20px;vertical-align:middle;"></div>`;
+      }
+
+      function buildHtml() {
+        const d = getData();
+        const map = {
+          minimal: tplMinimal,
+          dark: tplDark,
+          bold: tplBold,
+          neubrutal: tplNeubrutal,
+          editorial: tplEditorial,
+          glass: tplGlass,
+          mono: (dd) => tplSkin(dd, "mono"),
+          aurora: (dd) => tplSkin(dd, "aurora"),
+          luxury: (dd) => tplSkin(dd, "luxury"),
+          retro: (dd) => tplSkin(dd, "retro"),
+          corporate: (dd) => tplSkin(dd, "corporate"),
+          pastel: (dd) => tplSkin(dd, "pastel"),
+        };
+        let html = (map[currentTemplate] || tplMinimal)(d);
+        if (customAccent) {
+          html = html.replace(
+            "</head>",
+            `<style>:root{--accent:${customAccent} !important;--accent1:${customAccent} !important;--accent2:${customAccent} !important;}</style></head>`,
+          );
+        }
+        html = applyFontOverride(html, customFontPair);
+        html = applyHeroBackground(html, heroBackground, d.photo);
+        return html;
+      }
+
+      function render() {
+        const html = buildHtml();
+        el("preview-frame").srcdoc = html;
+        const slug = (el("f-name").value || "yourname")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "");
+        el("preview-url").textContent = slug + ".folio";
+        saveState();
+      }
+
+      function downloadSite() {
+        const html = buildHtml();
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      // Live visitor count for the Folio Forge app (shown on all 3 pages)
+      (function () {
+        const countEls = document.querySelectorAll(".site-visitor-count");
+        if (!countEls.length) return;
+        fetch(
+          "https://countapi.mileshilliard.com/api/v1/hit/folioforge-app-home-visits",
+        )
+          .then((r) => r.json())
+          .then((data) => {
+            if (data && typeof data.value !== "undefined") {
+              countEls.forEach((el2) => (el2.textContent = data.value));
+            } else {
+              throw new Error("no value");
+            }
+          })
+          .catch(() => {
+            document
+              .querySelectorAll(".home-visitor-badge")
+              .forEach((b) => (b.style.display = "none"));
+          });
+      })();
+
+      const restoredState = loadState();
+      if (!restoredState) {
+        renderProjectForm();
+        renderExpForm();
+        renderEduForm();
+        renderCustomSectionForm();
+        renderSectionOrderList();
+        render();
+      } else if (restoredState.view && restoredState.view !== "landing") {
+        showResumeBanner(restoredState);
+      }
+      if (ffStorage.kind === "session") {
+        setTimeout(
+          () =>
+            showToast(
+              "⚠️ Autosave is temporary in this browser — closes when the tab closes",
+              4500,
+            ),
+          600,
+        );
+      } else if (ffStorage.kind === "none") {
+        setTimeout(
+          () =>
+            showToast(
+              "⚠️ This browser is blocking autosave here — try hosting the file online",
+              4500,
+            ),
+          600,
+        );
+      }
+    </script>
+  </body>
+</html>
+
